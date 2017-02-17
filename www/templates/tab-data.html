@@ -1,0 +1,17 @@
+<ion-view title="<img class='title-image' src='img/DigitalGymLogo.png' />" left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background">
+    <ion-nav-buttons side="right">
+      <button class="button" style = "background-color: transparent; color: #fff; font-size: 20px; padding:6px" ng-click="exit()">
+       	Sign Out
+      </button>
+    </ion-nav-buttons>
+  <ion-content>
+    <ion-list>
+<!--       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="datum in data" type="item-text-wrap" href="#/tab/data/{{datum.id}}">
+{{datum}}
+      </ion-item> -->
+      <div class= "rpm"><h class = "rmp-title">RPM</h><br><br><h class = "rmp-title">{{lastRPM}}</h></div>
+      <div style = "background-color:#fff">
+      <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series = "series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"> </canvas> </div>
+    </ion-list>
+  </ion-content>
+</ion-view>
