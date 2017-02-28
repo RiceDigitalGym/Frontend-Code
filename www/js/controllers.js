@@ -22,9 +22,32 @@ angular.module('starter.controllers', [])
     $state.go('tab.data')
   }
 })
+.controller('HomeController', function($scope, $http, $timeout, $state){
+       (function tick() {
+      var old_timestamp = $scope.sessionPickup||localStorage.sessionBegin;
+      $scope.sessionPickup = (new Date).getTime();
+      $http.get("http://localhost:8000/bbb/sessionlisten").then(function(list) {
+        console.log(list.data)
+        if(list.data.status == "success"){
+            if (list.data.user.name == null || list.data.user.name == "null"){
+              $state.go("login")
+            }
+            else{
+              $state.go("tab.data")
+            }
+          }
+          else{
+              $timeout(tick, 500)
+          }
+        });
+    })();
+    $http.get("http:/35.162.184.130:8000/bbb/sessionlisten",
+    function(response){
+      console.log(response)
+    })
+})
 .controller('DataCtrl', function($scope, $http, $timeout) {
   $scope.exit  = function(){
-    console.log("testing")
     $http.post("http:/35.162.184.130:8000/bbb/addsession", {stampStart: 
     localStorage.sessionBegin, 
     stampEnd: (new Date).getTime(),
