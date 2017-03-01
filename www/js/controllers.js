@@ -1,3 +1,6 @@
+
+var API_ENDPOINT = "http://52.34.141.31:8000/bbb"
+// var API_ENDPOINT = "http://localhost:8000/bbb"
 angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {
@@ -17,22 +20,43 @@ angular.module('starter.controllers', [])
       $scope.female = "button2"
   }
   $scope.submitEmail = function(){
+    var gender = ""
+    if($scope.male == "button2"){
+      gender = "male"
+    }
+    if($scope.female == "button2"){
+      gender = "female"
+    }
     localStorage.email = $scope.formData.email
-    localStorage.sessionBegin = (new Date).getTime()
-    $state.go('tab.data')
+       $http.post(API_ENDPOINT+ "/addemailgender", {name: $scope.formData.email, userId: localStorage.userId, gender: gender}).then(function(response){
+         if(response.data.status == "success"){
+             $state.go('tab.data')
+        }
+       })
+
   }
 })
 .controller('HomeController', function($scope, $http, $timeout, $state){
+    $scope.$on('$ionicView.loaded', function (viewInfo, state) {
+        console.log('CTRL - $ionicView.loaded', viewInfo, state);
+    });
        (function tick() {
       var old_timestamp = $scope.sessionPickup||localStorage.sessionBegin;
       $scope.sessionPickup = (new Date).getTime();
-      $http.get("http://localhost:8000/bbb/sessionlisten").then(function(list) {
+      $http.get(API_ENDPOINT + "/sessionlisten").then(function(list) {
         console.log(list.data)
         if(list.data.status == "success"){
+          console.log(list.data.user)
             if (list.data.user.name == null || list.data.user.name == "null"){
+              localStorage.userId = list.data.user.id
               $state.go("login")
             }
             else{
+              console.log("user has a name")
+              localStorage.name = list.data.user.name
+              localStorage.email = list.data.user.email
+              localStorage.gender = list.data.user.gender
+              localStorage.userId = list.data.user.id
               $state.go("tab.data")
             }
           }
@@ -41,22 +65,16 @@ angular.module('starter.controllers', [])
           }
         });
     })();
-    $http.get("http:/35.162.184.130:8000/bbb/sessionlisten",
+    $http.get(API_ENDPOINT + "/sessionlisten",
     function(response){
       console.log(response)
     })
 })
-.controller('DataCtrl', function($scope, $http, $timeout) {
+.controller('DataCtrl', function($scope, $http, $timeout, $state) {
   $scope.exit  = function(){
-    $http.post("http:/35.162.184.130:8000/bbb/addsession", {stampStart: 
-    localStorage.sessionBegin, 
-    stampEnd: (new Date).getTime(),
-    name: localStorage.name, 
-    gender: localStorage.gender, 
-    email: localStorage.email},
-    function(response){
-      console.log("ok")
-      $state.go("login")
+    $http.post(API_ENDPOINT + "/logout", {userId: localStorage.userId}).then(function(response){
+      console.log("logging_out")
+      $state.go("home")
     })
   }
 
@@ -93,7 +111,7 @@ $scope.$on('$ionicView.loaded', function () {
      (function tick() {
       var old_timestamp = $scope.sessionPickup||localStorage.sessionBegin;
       $scope.sessionPickup = (new Date).getTime();
-      $http.get("http://ec2-35-162-184-130.us-west-2.compute.amazonaws.com:8000/bbb/data/last").then(function(list) {
+      $http.get(API_ENDPOINT + "/data/last").then(function(list) {
             
 
             //var val = $scope.averageRPM(list.data.slice(list.data.length-50, list.data.length-1))
@@ -125,7 +143,12 @@ $scope.$on('$ionicView.loaded', function () {
   $scope.submitName  = function(){
     if($scope.formData.name){
       localStorage.name = $scope.formData.name
-      $state.go('email')
+       $http.post(API_ENDPOINT+ "/addname", {name: $scope.formData.name, userId: localStorage.userId}).then(function(response){
+         if(response.data.status == "success"){
+         $state.go('email')
+        }
+       })
+     
     }
 
   }
