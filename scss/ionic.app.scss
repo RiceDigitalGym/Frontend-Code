@@ -4,6 +4,7 @@ in ionic's _variables.scss file.
 
 For example, you might change some of the default colors:
 
+
 $light:                           #fff !default;
 $stable:                          #f8f8f8 !default;
 $positive:                        #387ef5 !default;
@@ -21,3 +22,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+@font-face {
+    font-family: 'Open Sans';
+    src: url("../www/fonts/open-sans/OpenSans-Regular.ttf") format("ttf");
+    font-weight: normal;
+    font-style: normal; 
+}
+$font-family-ios-base: "Open Sans";
