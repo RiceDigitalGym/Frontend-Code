@@ -34,19 +34,6 @@ module.exports = function(Chart) {
 
 		dataElementType: Chart.elements.Point,
 
-		addElementAndReset: function(index) {
-			var me = this;
-			var options = me.chart.options;
-			var meta = me.getMeta();
-
-			Chart.DatasetController.prototype.addElementAndReset.call(me, index);
-
-			// Make sure bezier control points are updated
-			if (lineEnabled(me.getDataset(), options) && meta.dataset._model.tension !== 0) {
-				me.updateBezierControlPoints();
-			}
-		},
-
 		update: function(reset) {
 			var me = this;
 			var meta = me.getMeta();
@@ -78,7 +65,7 @@ module.exports = function(Chart) {
 					// Appearance
 					// The default behavior of lines is to break at null values, according
 					// to https://github.com/chartjs/Chart.js/issues/2435#issuecomment-216718158
-					// This option gives linse the ability to span gaps
+					// This option gives lines the ability to span gaps
 					spanGaps: dataset.spanGaps ? dataset.spanGaps : options.spanGaps,
 					tension: custom.tension ? custom.tension : helpers.getValueOrDefault(dataset.lineTension, lineElementOptions.tension),
 					backgroundColor: custom.backgroundColor ? custom.backgroundColor : (dataset.backgroundColor || lineElementOptions.backgroundColor),
@@ -152,11 +139,11 @@ module.exports = function(Chart) {
 			var dataset = this.getDataset();
 			var custom = point.custom || {};
 
-			if (custom.borderWidth) {
+			if (!isNaN(custom.borderWidth)) {
 				borderWidth = custom.borderWidth;
-			} else if (dataset.pointBorderWidth) {
+			} else if (!isNaN(dataset.pointBorderWidth)) {
 				borderWidth = helpers.getValueAtIndexOrDefault(dataset.pointBorderWidth, index, borderWidth);
-			} else if (dataset.borderWidth) {
+			} else if (!isNaN(dataset.borderWidth)) {
 				borderWidth = dataset.borderWidth;
 			}
 
@@ -305,14 +292,16 @@ module.exports = function(Chart) {
 				points[i].transition(easingDecimal);
 			}
 
+			Chart.canvasHelpers.clipArea(me.chart.chart.ctx, me.chart.chartArea);
 			// Transition and Draw the line
 			if (lineEnabled(me.getDataset(), me.chart.options)) {
 				meta.dataset.transition(easingDecimal).draw();
 			}
+			Chart.canvasHelpers.unclipArea(me.chart.chart.ctx);
 
 			// Draw the points
 			for (i=0, ilen=points.length; i<ilen; ++i) {
-				points[i].draw();
+				points[i].draw(me.chart.chartArea);
 			}
 		},
 

@@ -49,42 +49,43 @@ Library Features
 
 | Feature | Chart.js | D3 | HighCharts | Chartist |
 | ------- | -------- | --- | ---------- | -------- |
-| Completely Free | ✓ | ✓ | | ✓ |
-| Canvas | ✓ | | | |
-| SVG | | ✓ | ✓ | ✓ |
-| Built-in Charts | ✓ | | ✓ | ✓ |
-| 8+ Chart Types | ✓ | ✓ | ✓ | |
-| Extendable to Custom Charts | ✓ | ✓ | |  |
-| Supports Modern Browsers | ✓ | ✓ | ✓ | ✓ |
-| Extensive Documentation | ✓ | ✓ | ✓ | ✓ |
-| Open Source | ✓ | ✓ | ✓ | ✓ |
+| Completely Free | &check; | &check; | | &check; |
+| Canvas | &check; | | | |
+| SVG | | &check; | &check; | &check; |
+| Built-in Charts | &check; | | &check; | &check; |
+| 8+ Chart Types | &check; | &check; | &check; | |
+| Extendable to Custom Charts | &check; | &check; | |  |
+| Supports Modern Browsers | &check; | &check; | &check; | &check; |
+| Extensive Documentation | &check; | &check; | &check; | &check; |
+| Open Source | &check; | &check; | &check; | &check; |
 
 Built in Chart Types
 
 | Type | Chart.js | HighCharts | Chartist |
 | ---- | -------- | ---------- | -------- |
-| Combined Types | ✓ | ✓ | |
-| Line | ✓ | ✓ | ✓ |
-| Bar | ✓ | ✓ | ✓ |
-| Horizontal Bar | ✓ | ✓ | ✓ |
-| Pie/Doughnut | ✓ | ✓ | ✓ |
-| Polar Area | ✓ | ✓ | |
-| Radar | ✓ |  | |
-| Scatter | ✓ | ✓ | ✓ |
-| Bubble | ✓ | | |
-| Gauges | | ✓ | |
-| Maps (Heat/Tree/etc.) | | ✓ | |
+| Combined Types | &check; | &check; | |
+| Line | &check; | &check; | &check; |
+| Bar | &check; | &check; | &check; |
+| Horizontal Bar | &check; | &check; | &check; |
+| Pie/Doughnut | &check; | &check; | &check; |
+| Polar Area | &check; | &check; | |
+| Radar | &check; |  | |
+| Scatter | &check; | &check; | &check; |
+| Bubble | &check; | | |
+| Gauges | | &check; | |
+| Maps (Heat/Tree/etc.) | | &check; | |
 
 ### Popular Plugins
 
 There are many plugins that add additional functionality to Chart.js. Some particularly notable ones are listed here. In addition, many plugins can be found on the [Chart.js GitHub organization](https://github.com/chartjs).
 
- - <a href="https://github.com/chartjs/Chart.Zoom.js" target="_blank">Chart.Zoom.js</a> - Enable zooming and panning on charts
- - <a href="https://github.com/chartjs/Chart.Annotation.js" target="_blank">Chart.Annotation.js</a> - Draw lines and boxes on chart area
+ - <a href="https://github.com/chartjs/chartjs-plugin-annotation" target="_blank">chartjs-plugin-annotation.js</a> - Draw lines and boxes on chart area
+ - <a href="https://github.com/chartjs/chartjs-plugin-deferred" target="_blank">chartjs-plugin-deferred.js</a> - Defer initial chart update until chart scrolls into viewport
+ - <a href="https://github.com/compwright/chartjs-plugin-draggable" target="_blank">chartjs-plugin-draggable.js</a> - Makes select chart elements draggable with the mouse
+ - <a href="https://github.com/chartjs/chartjs-plugin-zoom" target="_blank">chartjs-plugin-zoom.js</a> - Enable zooming and panning on charts
  - <a href="https://github.com/chartjs/Chart.BarFunnel.js" target="_blank">Chart.BarFunnel.js</a> - Adds a bar funnel chart type
- - <a href="https://github.com/chartjs/Chart.Deferred.js" target="_blank">Chart.Deferred.js</a> - Defer initial chart update until chart scrolls into viewport
- - <a href="https://github.com/chartjs/Chart.smith.js" target="_blank">Chart.Smith.js</a> - Adds a smith chart type
  - <a href="https://github.com/chartjs/Chart.LinearGauge.js" target="_blank">Chart.LinearGauge.js</a> - Adds a linear gauge chart type
+ - <a href="https://github.com/chartjs/Chart.smith.js" target="_blank">Chart.Smith.js</a> - Adds a smith chart type
 
 ### Popular Extensions
 
@@ -101,6 +102,7 @@ There are many extensions which are available for use with popular frameworks. S
  - <a href="https://github.com/gor181/react-chartjs-2" target="_blank">react-chartjs-2</a>
 
 #### Django
+ - <a href="https://github.com/matthisk/django-jchart" target="_blank">Django JChart</a>
  - <a href="https://github.com/novafloss/django-chartjs" target="_blank">Django Chartjs</a>
 
 #### Ruby on Rails
@@ -108,3 +110,6 @@ There are many extensions which are available for use with popular frameworks. S
 
 #### Laravel
  - <a href="https://github.com/fxcosta/laravel-chartjs" target="_blank">laravel-chartjs</a>
+
+#### Vue.js
+ - <a href="https://github.com/apertureless/vue-chartjs/" target="_blank">vue-chartjs</a>

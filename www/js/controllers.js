@@ -44,7 +44,7 @@ angular.module('starter.controllers', [])
       var old_timestamp = $scope.sessionPickup||localStorage.sessionBegin;
       $scope.sessionPickup = (new Date).getTime();
       $http.get(API_ENDPOINT + "/sessionlisten").then(function(list) {
-        console.log(list.data)
+
         if(list.data.status == "success"){
           console.log(list.data.user)
             if (list.data.user.name == null || list.data.user.name == "null"){
@@ -71,6 +71,8 @@ angular.module('starter.controllers', [])
     })
 })
 .controller('DataCtrl', function($scope, $http, $timeout, $state) {
+
+  $scope.name = localStorage.name
   $scope.exit  = function(){
     $http.post(API_ENDPOINT + "/logout", {userId: localStorage.userId}).then(function(response){
       console.log("logging_out")
@@ -117,6 +119,7 @@ $scope.$on('$ionicView.loaded', function () {
             //var val = $scope.averageRPM(list.data.slice(list.data.length-50, list.data.length-1))
             var rpm = list.data.rpm
             $scope.data[0].push(rpm)
+            $scope.rpm_data = [0, rpm-200, rpm]
             $scope.lastRPM = rpm
             //$scope.lastRPM = val
             $scope.labels.push("")

@@ -32,8 +32,26 @@ module.exports = function(Chart) {
 				return;
 			}
 
-			var xPadding = 0;
-			var yPadding = 0;
+			var layoutOptions = chartInstance.options.layout;
+			var padding = layoutOptions ? layoutOptions.padding : null;
+
+			var leftPadding = 0;
+			var rightPadding = 0;
+			var topPadding = 0;
+			var bottomPadding = 0;
+
+			if (!isNaN(padding)) {
+				// options.layout.padding is a number. assign to all
+				leftPadding = padding;
+				rightPadding = padding;
+				topPadding = padding;
+				bottomPadding = padding;
+			} else {
+				leftPadding = padding.left || 0;
+				rightPadding = padding.right || 0;
+				topPadding = padding.top || 0;
+				bottomPadding = padding.bottom || 0;
+			}
 
 			var leftBoxes = helpers.where(chartInstance.boxes, function(box) {
 				return box.options.position === 'left';
@@ -99,8 +117,8 @@ module.exports = function(Chart) {
 			// 9. Tell any axes that overlay the chart area the positions of the chart area
 
 			// Step 1
-			var chartWidth = width - (2 * xPadding);
-			var chartHeight = height - (2 * yPadding);
+			var chartWidth = width - leftPadding - rightPadding;
+			var chartHeight = height - topPadding - bottomPadding;
 			var chartAreaWidth = chartWidth / 2; // min 50%
 			var chartAreaHeight = chartHeight / 2; // min 50%
 
@@ -130,20 +148,41 @@ module.exports = function(Chart) {
 				minBoxSizes.push({
 					horizontal: isHorizontal,
 					minSize: minSize,
-					box: box
+					box: box,
 				});
 			}
 
 			helpers.each(leftBoxes.concat(rightBoxes, topBoxes, bottomBoxes), getMinimumBoxSize);
 
+			// If a horizontal box has padding, we move the left boxes over to avoid ugly charts (see issue #2478)
+			var maxHorizontalLeftPadding = 0;
+			var maxHorizontalRightPadding = 0;
+			var maxVerticalTopPadding = 0;
+			var maxVerticalBottomPadding = 0;
+
+			helpers.each(topBoxes.concat(bottomBoxes), function(horizontalBox) {
+				if (horizontalBox.getPadding) {
+					var boxPadding = horizontalBox.getPadding();
+					maxHorizontalLeftPadding = Math.max(maxHorizontalLeftPadding, boxPadding.left);
+					maxHorizontalRightPadding = Math.max(maxHorizontalRightPadding, boxPadding.right);
+				}
+			});
+
+			helpers.each(leftBoxes.concat(rightBoxes), function(verticalBox) {
+				if (verticalBox.getPadding) {
+					var boxPadding = verticalBox.getPadding();
+					maxVerticalTopPadding = Math.max(maxVerticalTopPadding, boxPadding.top);
+					maxVerticalBottomPadding = Math.max(maxVerticalBottomPadding, boxPadding.bottom);
+				}
+			});
+
 			// At this point, maxChartAreaHeight and maxChartAreaWidth are the size the chart area could
 			// be if the axes are drawn at their minimum sizes.
-
 			// Steps 5 & 6
-			var totalLeftBoxesWidth = xPadding;
-			var totalRightBoxesWidth = xPadding;
-			var totalTopBoxesHeight = yPadding;
-			var totalBottomBoxesHeight = yPadding;
+			var totalLeftBoxesWidth = leftPadding;
+			var totalRightBoxesWidth = rightPadding;
+			var totalTopBoxesHeight = topPadding;
+			var totalBottomBoxesHeight = bottomPadding;
 
 			// Function to fit a box
 			function fitBox(box) {
@@ -154,8 +193,8 @@ module.exports = function(Chart) {
 				if (minBoxSize) {
 					if (box.isHorizontal()) {
 						var scaleMargin = {
-							left: totalLeftBoxesWidth,
-							right: totalRightBoxesWidth,
+							left: Math.max(totalLeftBoxesWidth, maxHorizontalLeftPadding),
+							right: Math.max(totalRightBoxesWidth, maxHorizontalRightPadding),
 							top: 0,
 							bottom: 0
 						};
@@ -213,10 +252,10 @@ module.exports = function(Chart) {
 			helpers.each(leftBoxes.concat(rightBoxes), finalFitVerticalBox);
 
 			// Recalculate because the size of each layout might have changed slightly due to the margins (label rotation for instance)
-			totalLeftBoxesWidth = xPadding;
-			totalRightBoxesWidth = xPadding;
-			totalTopBoxesHeight = yPadding;
-			totalBottomBoxesHeight = yPadding;
+			totalLeftBoxesWidth = leftPadding;
+			totalRightBoxesWidth = rightPadding;
+			totalTopBoxesHeight = topPadding;
+			totalBottomBoxesHeight = bottomPadding;
 
 			helpers.each(leftBoxes, function(box) {
 				totalLeftBoxesWidth += box.width;
@@ -232,6 +271,15 @@ module.exports = function(Chart) {
 			helpers.each(bottomBoxes, function(box) {
 				totalBottomBoxesHeight += box.height;
 			});
+
+			// We may be adding some padding to account for rotated x axis labels
+			var leftPaddingAddition = Math.max(maxHorizontalLeftPadding - totalLeftBoxesWidth, 0);
+			totalLeftBoxesWidth += leftPaddingAddition;
+			totalRightBoxesWidth += Math.max(maxHorizontalRightPadding - totalRightBoxesWidth, 0);
+
+			var topPaddingAddition = Math.max(maxVerticalTopPadding - totalTopBoxesHeight, 0);
+			totalTopBoxesHeight += topPaddingAddition;
+			totalBottomBoxesHeight += Math.max(maxVerticalBottomPadding - totalBottomBoxesHeight, 0);
 
 			// Figure out if our chart area changed. This would occur if the dataset layout label rotation
 			// changed due to the application of the margins in step 6. Since we can only get bigger, this is safe to do
@@ -265,13 +313,13 @@ module.exports = function(Chart) {
 			}
 
 			// Step 7 - Position the boxes
-			var left = xPadding;
-			var top = yPadding;
+			var left = leftPadding + leftPaddingAddition;
+			var top = topPadding + topPaddingAddition;
 
 			function placeBox(box) {
 				if (box.isHorizontal()) {
-					box.left = box.options.fullWidth ? xPadding : totalLeftBoxesWidth;
-					box.right = box.options.fullWidth ? width - xPadding : totalLeftBoxesWidth + maxChartAreaWidth;
+					box.left = box.options.fullWidth ? leftPadding : totalLeftBoxesWidth;
+					box.right = box.options.fullWidth ? width - rightPadding : totalLeftBoxesWidth + maxChartAreaWidth;
 					box.top = top;
 					box.bottom = top + box.height;
 

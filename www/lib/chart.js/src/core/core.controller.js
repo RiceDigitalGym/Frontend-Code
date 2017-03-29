@@ -3,6 +3,9 @@
 module.exports = function(Chart) {
 
 	var helpers = Chart.helpers;
+	var plugins = Chart.plugins;
+	var platform = Chart.platform;
+
 	// Create a dictionary of chart types, to allow for extension of existing types
 	Chart.types = {};
 
@@ -14,56 +17,119 @@ module.exports = function(Chart) {
 	Chart.controllers = {};
 
 	/**
+	 * Initializes the given config with global and chart default values.
+	 */
+	function initConfig(config) {
+		config = config || {};
+
+		// Do NOT use configMerge() for the data object because this method merges arrays
+		// and so would change references to labels and datasets, preventing data updates.
+		var data = config.data = config.data || {};
+		data.datasets = data.datasets || [];
+		data.labels = data.labels || [];
+
+		config.options = helpers.configMerge(
+			Chart.defaults.global,
+			Chart.defaults[config.type],
+			config.options || {});
+
+		return config;
+	}
+
+	/**
+	 * Updates the config of the chart
+	 * @param chart {Chart.Controller} chart to update the options for
+	 */
+	function updateConfig(chart) {
+		var newOptions = chart.options;
+
+		// Update Scale(s) with options
+		if (newOptions.scale) {
+			chart.scale.options = newOptions.scale;
+		} else if (newOptions.scales) {
+			newOptions.scales.xAxes.concat(newOptions.scales.yAxes).forEach(function(scaleOptions) {
+				chart.scales[scaleOptions.id].options = scaleOptions;
+			});
+		}
+
+		// Tooltip
+		chart.tooltip._options = newOptions.tooltips;
+	}
+
+	/**
 	 * @class Chart.Controller
 	 * The main controller of a chart.
 	 */
-	Chart.Controller = function(instance) {
+	Chart.Controller = function(item, config, instance) {
+		var me = this;
 
-		this.chart = instance;
-		this.config = instance.config;
-		this.options = this.config.options = helpers.configMerge(Chart.defaults.global, Chart.defaults[this.config.type], this.config.options || {});
-		this.id = helpers.uid();
+		config = initConfig(config);
 
-		Object.defineProperty(this, 'data', {
+		var context = platform.acquireContext(item, config);
+		var canvas = context && context.canvas;
+		var height = canvas && canvas.height;
+		var width = canvas && canvas.width;
+
+		instance.ctx = context;
+		instance.canvas = canvas;
+		instance.config = config;
+		instance.width = width;
+		instance.height = height;
+		instance.aspectRatio = height? width / height : null;
+
+		me.id = helpers.uid();
+		me.chart = instance;
+		me.config = config;
+		me.options = config.options;
+		me._bufferedRender = false;
+
+		// Add the chart instance to the global namespace
+		Chart.instances[me.id] = me;
+
+		Object.defineProperty(me, 'data', {
 			get: function() {
-				return this.config.data;
+				return me.config.data;
 			}
 		});
 
-		// Add the chart instance to the global namespace
-		Chart.instances[this.id] = this;
-
-		if (this.options.responsive) {
-			// Silent resize before chart draws
-			this.resize(true);
+		if (!context || !canvas) {
+			// The given item is not a compatible context2d element, let's return before finalizing
+			// the chart initialization but after setting basic chart / controller properties that
+			// can help to figure out that the chart is not valid (e.g chart.canvas !== null);
+			// https://github.com/chartjs/Chart.js/issues/2807
+			console.error("Failed to create chart: can't acquire context from the given item");
+			return me;
 		}
 
-		this.initialize();
+		me.initialize();
+		me.update();
 
-		return this;
+		return me;
 	};
 
-	helpers.extend(Chart.Controller.prototype, /** @lends Chart.Controller */ {
-
+	helpers.extend(Chart.Controller.prototype, /** @lends Chart.Controller.prototype */ {
 		initialize: function() {
 			var me = this;
+
 			// Before init plugin notification
-			Chart.plugins.notify('beforeInit', [me]);
+			plugins.notify(me, 'beforeInit');
+
+			helpers.retinaScale(me.chart);
 
 			me.bindEvents();
 
-			// Make sure controllers are built first so that each dataset is bound to an axis before the scales
-			// are built
+			if (me.options.responsive) {
+				// Initial resize before chart draws (must be silent to preserve initial animations).
+				me.resize(true);
+			}
+
+			// Make sure scales have IDs and are built before we build any controllers.
 			me.ensureScalesHaveIDs();
-			me.buildOrUpdateControllers();
 			me.buildScales();
-			me.updateLayout();
-			me.resetElements();
 			me.initToolTip();
-			me.update();
 
 			// After init plugin notification
-			Chart.plugins.notify('afterInit', [me]);
+			plugins.notify(me, 'afterInit');
 
 			return me;
 		},
@@ -74,7 +140,7 @@ module.exports = function(Chart) {
 		},
 
 		stop: function() {
-			// Stops any current animation loop occuring
+			// Stops any current animation loop occurring
 			Chart.animationService.cancelAnimation(this);
 			return this;
 		},
@@ -82,37 +148,39 @@ module.exports = function(Chart) {
 		resize: function(silent) {
 			var me = this;
 			var chart = me.chart;
+			var options = me.options;
 			var canvas = chart.canvas;
-			var newWidth = helpers.getMaximumWidth(canvas);
-			var aspectRatio = chart.aspectRatio;
-			var newHeight = (me.options.maintainAspectRatio && isNaN(aspectRatio) === false && isFinite(aspectRatio) && aspectRatio !== 0) ? newWidth / aspectRatio : helpers.getMaximumHeight(canvas);
+			var aspectRatio = (options.maintainAspectRatio && chart.aspectRatio) || null;
 
-			var sizeChanged = chart.width !== newWidth || chart.height !== newHeight;
+			// the canvas render width and height will be casted to integers so make sure that
+			// the canvas display style uses the same integer values to avoid blurring effect.
+			var newWidth = Math.floor(helpers.getMaximumWidth(canvas));
+			var newHeight = Math.floor(aspectRatio? newWidth / aspectRatio : helpers.getMaximumHeight(canvas));
 
-			if (!sizeChanged) {
-				return me;
+			if (chart.width === newWidth && chart.height === newHeight) {
+				return;
 			}
 
 			canvas.width = chart.width = newWidth;
 			canvas.height = chart.height = newHeight;
+			canvas.style.width = newWidth + 'px';
+			canvas.style.height = newHeight + 'px';
 
 			helpers.retinaScale(chart);
 
-			// Notify any plugins about the resize
-			var newSize = {width: newWidth, height: newHeight};
-			Chart.plugins.notify('resize', [me, newSize]);
-
-			// Notify of resize
-			if (me.options.onResize) {
-				me.options.onResize(me, newSize);
-			}
-
 			if (!silent) {
+				// Notify any plugins about the resize
+				var newSize = {width: newWidth, height: newHeight};
+				plugins.notify(me, 'resize', [newSize]);
+
+				// Notify of resize
+				if (me.options.onResize) {
+					me.options.onResize(me, newSize);
+				}
+
 				me.stop();
 				me.update(me.options.responsiveAnimationDuration);
 			}
-
-			return me;
 		},
 
 		ensureScalesHaveIDs: function() {
@@ -185,10 +253,6 @@ module.exports = function(Chart) {
 			Chart.scaleService.addScalesToLayout(this);
 		},
 
-		updateLayout: function() {
-			Chart.layoutService.update(this, this.chart.width, this.chart.height);
-		},
-
 		buildOrUpdateControllers: function() {
 			var me = this;
 			var types = [];
@@ -222,6 +286,10 @@ module.exports = function(Chart) {
 			return newControllers;
 		},
 
+		/**
+		 * Reset the elements of all datasets
+		 * @private
+		 */
 		resetElements: function() {
 			var me = this;
 			helpers.each(me.data.datasets, function(dataset, datasetIndex) {
@@ -229,9 +297,22 @@ module.exports = function(Chart) {
 			}, me);
 		},
 
+		/**
+		* Resets the chart back to it's state before the initial animation
+		*/
+		reset: function() {
+			this.resetElements();
+			this.tooltip.initialize();
+		},
+
 		update: function(animationDuration, lazy) {
 			var me = this;
-			Chart.plugins.notify('beforeUpdate', [me]);
+
+			updateConfig(me);
+
+			if (plugins.notify(me, 'beforeUpdate') === false) {
+				return;
+			}
 
 			// In case the entire data object changed
 			me.tooltip._data = me.data;
@@ -244,10 +325,7 @@ module.exports = function(Chart) {
 				me.getDatasetMeta(datasetIndex).controller.buildOrUpdateElements();
 			}, me);
 
-			Chart.layoutService.update(me, me.chart.width, me.chart.height);
-
-			// Apply changes to the dataets that require the scales to have been calculated i.e BorderColor chages
-			Chart.plugins.notify('afterScaleUpdate', [me]);
+			me.updateLayout();
 
 			// Can only reset the new controllers after the scales have been updated
 			helpers.each(newControllers, function(controller) {
@@ -257,57 +335,77 @@ module.exports = function(Chart) {
 			me.updateDatasets();
 
 			// Do this before render so that any plugins that need final scale updates can use it
-			Chart.plugins.notify('afterUpdate', [me]);
+			plugins.notify(me, 'afterUpdate');
 
-			me.render(animationDuration, lazy);
+			if (me._bufferedRender) {
+				me._bufferedRequest = {
+					lazy: lazy,
+					duration: animationDuration
+				};
+			} else {
+				me.render(animationDuration, lazy);
+			}
 		},
 
 		/**
-		 * @method beforeDatasetsUpdate
-		 * @description Called before all datasets are updated. If a plugin returns false,
-		 * the datasets update will be cancelled until another chart update is triggered.
-		 * @param {Object} instance the chart instance being updated.
-		 * @returns {Boolean} false to cancel the datasets update.
-		 * @memberof Chart.PluginBase
-		 * @since version 2.1.5
-		 * @instance
+		 * Updates the chart layout unless a plugin returns `false` to the `beforeLayout`
+		 * hook, in which case, plugins will not be called on `afterLayout`.
+		 * @private
 		 */
+		updateLayout: function() {
+			var me = this;
+
+			if (plugins.notify(me, 'beforeLayout') === false) {
+				return;
+			}
+
+			Chart.layoutService.update(this, this.chart.width, this.chart.height);
+
+			/**
+			 * Provided for backward compatibility, use `afterLayout` instead.
+			 * @method IPlugin#afterScaleUpdate
+			 * @deprecated since version 2.5.0
+			 * @todo remove at version 3
+			 */
+			plugins.notify(me, 'afterScaleUpdate');
+			plugins.notify(me, 'afterLayout');
+		},
 
 		/**
-		 * @method afterDatasetsUpdate
-		 * @description Called after all datasets have been updated. Note that this
-		 * extension will not be called if the datasets update has been cancelled.
-		 * @param {Object} instance the chart instance being updated.
-		 * @memberof Chart.PluginBase
-		 * @since version 2.1.5
-		 * @instance
-		 */
-
-		/**
-		 * Updates all datasets unless a plugin returns false to the beforeDatasetsUpdate
-		 * extension, in which case no datasets will be updated and the afterDatasetsUpdate
-		 * notification will be skipped.
-		 * @protected
-		 * @instance
+		 * Updates all datasets unless a plugin returns `false` to the `beforeDatasetsUpdate`
+		 * hook, in which case, plugins will not be called on `afterDatasetsUpdate`.
+		 * @private
 		 */
 		updateDatasets: function() {
 			var me = this;
-			var i, ilen;
 
-			if (Chart.plugins.notify('beforeDatasetsUpdate', [me])) {
-				for (i = 0, ilen = me.data.datasets.length; i < ilen; ++i) {
-					me.getDatasetMeta(i).controller.update();
-				}
-
-				Chart.plugins.notify('afterDatasetsUpdate', [me]);
+			if (plugins.notify(me, 'beforeDatasetsUpdate') === false) {
+				return;
 			}
+
+			for (var i = 0, ilen = me.data.datasets.length; i < ilen; ++i) {
+				me.getDatasetMeta(i).controller.update();
+			}
+
+			plugins.notify(me, 'afterDatasetsUpdate');
 		},
 
 		render: function(duration, lazy) {
 			var me = this;
-			Chart.plugins.notify('beforeRender', [me]);
+
+			if (plugins.notify(me, 'beforeRender') === false) {
+				return;
+			}
 
 			var animationOptions = me.options.animation;
+			var onComplete = function() {
+				plugins.notify(me, 'afterRender');
+				var callback = animationOptions && animationOptions.onComplete;
+				if (callback && callback.call) {
+					callback.call(me);
+				}
+			};
+
 			if (animationOptions && ((typeof duration !== 'undefined' && duration !== 0) || (typeof duration === 'undefined' && animationOptions.duration !== 0))) {
 				var animation = new Chart.Animation();
 				animation.numSteps = (duration || animationOptions.duration) / 16.66; // 60 fps
@@ -324,172 +422,94 @@ module.exports = function(Chart) {
 
 				// user events
 				animation.onAnimationProgress = animationOptions.onProgress;
-				animation.onAnimationComplete = animationOptions.onComplete;
+				animation.onAnimationComplete = onComplete;
 
 				Chart.animationService.addAnimation(me, animation, duration, lazy);
 			} else {
 				me.draw();
-				if (animationOptions && animationOptions.onComplete && animationOptions.onComplete.call) {
-					animationOptions.onComplete.call(me);
-				}
+				onComplete();
 			}
+
 			return me;
 		},
 
-		draw: function(ease) {
+		draw: function(easingValue) {
 			var me = this;
-			var easingDecimal = ease || 1;
+
 			me.clear();
 
-			Chart.plugins.notify('beforeDraw', [me, easingDecimal]);
+			if (easingValue === undefined || easingValue === null) {
+				easingValue = 1;
+			}
+
+			if (plugins.notify(me, 'beforeDraw', [easingValue]) === false) {
+				return;
+			}
 
 			// Draw all the scales
 			helpers.each(me.boxes, function(box) {
 				box.draw(me.chartArea);
 			}, me);
+
 			if (me.scale) {
 				me.scale.draw();
 			}
 
-			Chart.plugins.notify('beforeDatasetsDraw', [me, easingDecimal]);
+			me.drawDatasets(easingValue);
+
+			// Finally draw the tooltip
+			me.tooltip.transition(easingValue).draw();
+
+			plugins.notify(me, 'afterDraw', [easingValue]);
+		},
+
+		/**
+		 * Draws all datasets unless a plugin returns `false` to the `beforeDatasetsDraw`
+		 * hook, in which case, plugins will not be called on `afterDatasetsDraw`.
+		 * @private
+		 */
+		drawDatasets: function(easingValue) {
+			var me = this;
+
+			if (plugins.notify(me, 'beforeDatasetsDraw', [easingValue]) === false) {
+				return;
+			}
 
 			// Draw each dataset via its respective controller (reversed to support proper line stacking)
 			helpers.each(me.data.datasets, function(dataset, datasetIndex) {
 				if (me.isDatasetVisible(datasetIndex)) {
-					me.getDatasetMeta(datasetIndex).controller.draw(ease);
+					me.getDatasetMeta(datasetIndex).controller.draw(easingValue);
 				}
 			}, me, true);
 
-			Chart.plugins.notify('afterDatasetsDraw', [me, easingDecimal]);
-
-			// Finally draw the tooltip
-			me.tooltip.transition(easingDecimal).draw();
-
-			Chart.plugins.notify('afterDraw', [me, easingDecimal]);
+			plugins.notify(me, 'afterDatasetsDraw', [easingValue]);
 		},
 
 		// Get the single element that was clicked on
 		// @return : An object containing the dataset index and element index of the matching element. Also contains the rectangle that was draw
 		getElementAtEvent: function(e) {
-			var me = this;
-			var eventPosition = helpers.getRelativePosition(e, me.chart);
-			var elementsArray = [];
-
-			helpers.each(me.data.datasets, function(dataset, datasetIndex) {
-				if (me.isDatasetVisible(datasetIndex)) {
-					var meta = me.getDatasetMeta(datasetIndex);
-					helpers.each(meta.data, function(element) {
-						if (element.inRange(eventPosition.x, eventPosition.y)) {
-							elementsArray.push(element);
-							return elementsArray;
-						}
-					});
-				}
-			});
-
-			return elementsArray.slice(0, 1);
+			return Chart.Interaction.modes.single(this, e);
 		},
 
 		getElementsAtEvent: function(e) {
-			var me = this;
-			var eventPosition = helpers.getRelativePosition(e, me.chart);
-			var elementsArray = [];
-
-			var found = function() {
-				if (me.data.datasets) {
-					for (var i = 0; i < me.data.datasets.length; i++) {
-						var meta = me.getDatasetMeta(i);
-						if (me.isDatasetVisible(i)) {
-							for (var j = 0; j < meta.data.length; j++) {
-								if (meta.data[j].inRange(eventPosition.x, eventPosition.y)) {
-									return meta.data[j];
-								}
-							}
-						}
-					}
-				}
-			}.call(me);
-
-			if (!found) {
-				return elementsArray;
-			}
-
-			helpers.each(me.data.datasets, function(dataset, datasetIndex) {
-				if (me.isDatasetVisible(datasetIndex)) {
-					var meta = me.getDatasetMeta(datasetIndex),
-						element = meta.data[found._index];
-					if (element && !element._view.skip) {
-						elementsArray.push(element);
-					}
-				}
-			}, me);
-
-			return elementsArray;
+			return Chart.Interaction.modes.label(this, e, {intersect: true});
 		},
 
 		getElementsAtXAxis: function(e) {
-			var me = this;
-			var eventPosition = helpers.getRelativePosition(e, me.chart);
-			var elementsArray = [];
-
-			var found = function() {
-				if (me.data.datasets) {
-					for (var i = 0; i < me.data.datasets.length; i++) {
-						var meta = me.getDatasetMeta(i);
-						if (me.isDatasetVisible(i)) {
-							for (var j = 0; j < meta.data.length; j++) {
-								if (meta.data[j].inLabelRange(eventPosition.x, eventPosition.y)) {
-									return meta.data[j];
-								}
-							}
-						}
-					}
-				}
-			}.call(me);
-
-			if (!found) {
-				return elementsArray;
-			}
-
-			helpers.each(me.data.datasets, function(dataset, datasetIndex) {
-				if (me.isDatasetVisible(datasetIndex)) {
-					var meta = me.getDatasetMeta(datasetIndex);
-					var index = helpers.findIndex(meta.data, function(it) {
-						return found._model.x === it._model.x;
-					});
-					if (index !== -1 && !meta.data[index]._view.skip) {
-						elementsArray.push(meta.data[index]);
-					}
-				}
-			}, me);
-
-			return elementsArray;
+			return Chart.Interaction.modes['x-axis'](this, e, {intersect: true});
 		},
 
-		getElementsAtEventForMode: function(e, mode) {
-			var me = this;
-			switch (mode) {
-			case 'single':
-				return me.getElementAtEvent(e);
-			case 'label':
-				return me.getElementsAtEvent(e);
-			case 'dataset':
-				return me.getDatasetAtEvent(e);
-			case 'x-axis':
-				return me.getElementsAtXAxis(e);
-			default:
-				return e;
+		getElementsAtEventForMode: function(e, mode, options) {
+			var method = Chart.Interaction.modes[mode];
+			if (typeof method === 'function') {
+				return method(this, e, options);
 			}
+
+			return [];
 		},
 
 		getDatasetAtEvent: function(e) {
-			var elementsArray = this.getElementAtEvent(e);
-
-			if (elementsArray.length > 0) {
-				elementsArray = this.getDatasetMeta(elementsArray[0]._datasetIndex).data;
-			}
-
-			return elementsArray;
+			return Chart.Interaction.modes.dataset(this, e, {intersect: true});
 		},
 
 		getDatasetMeta: function(datasetIndex) {
@@ -539,26 +559,29 @@ module.exports = function(Chart) {
 
 		destroy: function() {
 			var me = this;
-			me.stop();
-			me.clear();
-			helpers.unbindEvents(me, me.events);
-			helpers.removeResizeListener(me.chart.canvas.parentNode);
-
-			// Reset canvas height/width attributes
 			var canvas = me.chart.canvas;
-			canvas.width = me.chart.width;
-			canvas.height = me.chart.height;
+			var meta, i, ilen;
 
-			// if we scaled the canvas in response to a devicePixelRatio !== 1, we need to undo that transform here
-			if (me.chart.originalDevicePixelRatio !== undefined) {
-				me.chart.ctx.scale(1 / me.chart.originalDevicePixelRatio, 1 / me.chart.originalDevicePixelRatio);
+			me.stop();
+
+			// dataset controllers need to cleanup associated data
+			for (i = 0, ilen = me.data.datasets.length; i < ilen; ++i) {
+				meta = me.getDatasetMeta(i);
+				if (meta.controller) {
+					meta.controller.destroy();
+					meta.controller = null;
+				}
 			}
 
-			// Reset to the old style since it may have been changed by the device pixel ratio changes
-			canvas.style.width = me.chart.originalCanvasStyleWidth;
-			canvas.style.height = me.chart.originalCanvasStyleHeight;
+			if (canvas) {
+				me.unbindEvents();
+				helpers.clear(me.chart);
+				platform.releaseContext(me.chart.ctx);
+				me.chart.canvas = null;
+				me.chart.ctx = null;
+			}
 
-			Chart.plugins.notify('destroy', [me]);
+			plugins.notify(me, 'destroy');
 
 			delete Chart.instances[me.id];
 		},
@@ -575,32 +598,57 @@ module.exports = function(Chart) {
 				_data: me.data,
 				_options: me.options.tooltips
 			}, me);
+			me.tooltip.initialize();
 		},
 
+		/**
+		 * @private
+		 */
 		bindEvents: function() {
 			var me = this;
-			helpers.bindEvents(me, me.options.events, function(evt) {
-				me.eventHandler(evt);
+			var listeners = me._listeners = {};
+			var listener = function() {
+				me.eventHandler.apply(me, arguments);
+			};
+
+			helpers.each(me.options.events, function(type) {
+				platform.addEventListener(me, type, listener);
+				listeners[type] = listener;
+			});
+
+			// Responsiveness is currently based on the use of an iframe, however this method causes
+			// performance issues and could be troublesome when used with ad blockers. So make sure
+			// that the user is still able to create a chart without iframe when responsive is false.
+			// See https://github.com/chartjs/Chart.js/issues/2210
+			if (me.options.responsive) {
+				listener = function() {
+					me.resize();
+				};
+
+				platform.addEventListener(me, 'resize', listener);
+				listeners.resize = listener;
+			}
+		},
+
+		/**
+		 * @private
+		 */
+		unbindEvents: function() {
+			var me = this;
+			var listeners = me._listeners;
+			if (!listeners) {
+				return;
+			}
+
+			delete me._listeners;
+			helpers.each(listeners, function(listener, type) {
+				platform.removeEventListener(me, type, listener);
 			});
 		},
 
 		updateHoverStyle: function(elements, mode, enabled) {
 			var method = enabled? 'setHoverStyle' : 'removeHoverStyle';
 			var element, i, ilen;
-
-			switch (mode) {
-			case 'single':
-				elements = [elements[0]];
-				break;
-			case 'label':
-			case 'dataset':
-			case 'x-axis':
-				// elements = elements;
-				break;
-			default:
-				// unsupported mode
-				return;
-			}
 
 			for (i=0, ilen=elements.length; i<ilen; ++i) {
 				element = elements[i];
@@ -610,37 +658,76 @@ module.exports = function(Chart) {
 			}
 		},
 
+		/**
+		 * @private
+		 */
 		eventHandler: function(e) {
 			var me = this;
 			var tooltip = me.tooltip;
+
+			if (plugins.notify(me, 'beforeEvent', [e]) === false) {
+				return;
+			}
+
+			// Buffer any update calls so that renders do not occur
+			me._bufferedRender = true;
+			me._bufferedRequest = null;
+
+			var changed = me.handleEvent(e);
+			changed |= tooltip && tooltip.handleEvent(e);
+
+			plugins.notify(me, 'afterEvent', [e]);
+
+			var bufferedRequest = me._bufferedRequest;
+			if (bufferedRequest) {
+				// If we have an update that was triggered, we need to do a normal render
+				me.render(bufferedRequest.duration, bufferedRequest.lazy);
+			} else if (changed && !me.animating) {
+				// If entering, leaving, or changing elements, animate the change via pivot
+				me.stop();
+
+				// We only need to render at this point. Updating will cause scales to be
+				// recomputed generating flicker & using more memory than necessary.
+				me.render(me.options.hover.animationDuration, true);
+			}
+
+			me._bufferedRender = false;
+			me._bufferedRequest = null;
+
+			return me;
+		},
+
+		/**
+		 * Handle an event
+		 * @private
+		 * @param {IEvent} event the event to handle
+		 * @return {Boolean} true if the chart needs to re-render
+		 */
+		handleEvent: function(e) {
+			var me = this;
 			var options = me.options || {};
 			var hoverOptions = options.hover;
-			var tooltipsOptions = options.tooltips;
+			var changed = false;
 
 			me.lastActive = me.lastActive || [];
-			me.lastTooltipActive = me.lastTooltipActive || [];
 
 			// Find Active Elements for hover and tooltips
 			if (e.type === 'mouseout') {
 				me.active = [];
-				me.tooltipActive = [];
 			} else {
-				me.active = me.getElementsAtEventForMode(e, hoverOptions.mode);
-				me.tooltipActive = me.getElementsAtEventForMode(e, tooltipsOptions.mode);
+				me.active = me.getElementsAtEventForMode(e, hoverOptions.mode, hoverOptions);
 			}
 
 			// On Hover hook
 			if (hoverOptions.onHover) {
-				hoverOptions.onHover.call(me, me.active);
-			}
-
-			if (me.legend && me.legend.handleEvent) {
-				me.legend.handleEvent(e);
+				// Need to call with native event here to not break backwards compatibility
+				hoverOptions.onHover.call(me, e.native, me.active);
 			}
 
 			if (e.type === 'mouseup' || e.type === 'click') {
 				if (options.onClick) {
-					options.onClick.call(me, e, me.active);
+					// Use e.native here for backwards compatibility
+					options.onClick.call(me, e.native, me.active);
 				}
 			}
 
@@ -654,37 +741,12 @@ module.exports = function(Chart) {
 				me.updateHoverStyle(me.active, hoverOptions.mode, true);
 			}
 
-			// Built in Tooltips
-			if (tooltipsOptions.enabled || tooltipsOptions.custom) {
-				tooltip.initialize();
-				tooltip._active = me.tooltipActive;
-				tooltip.update(true);
-			}
-
-			// Hover animations
-			tooltip.pivot();
-
-			if (!me.animating) {
-				// If entering, leaving, or changing elements, animate the change via pivot
-				if (!helpers.arrayEquals(me.active, me.lastActive) ||
-					!helpers.arrayEquals(me.tooltipActive, me.lastTooltipActive)) {
-
-					me.stop();
-
-					if (tooltipsOptions.enabled || tooltipsOptions.custom) {
-						tooltip.update(true);
-					}
-
-					// We only need to render at this point. Updating will cause scales to be
-					// recomputed generating flicker & using more memory than necessary.
-					me.render(hoverOptions.animationDuration, true);
-				}
-			}
+			changed = !helpers.arrayEquals(me.active, me.lastActive);
 
 			// Remember Last Actives
 			me.lastActive = me.active;
-			me.lastTooltipActive = me.tooltipActive;
-			return me;
+
+			return changed;
 		}
 	});
 };

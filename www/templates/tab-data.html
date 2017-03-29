@@ -1,17 +1,28 @@
-<ion-view title="<img class='title-image' src='img/question_mark.png' />" left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background">
-    <ion-nav-buttons side="right">
-      <button class="button" style = "background-color: transparent; color: #fff; font-size: 20px; padding:6px" ng-click="exit()">
-       	Sign Out
-      </button>
-    </ion-nav-buttons>
-  <ion-content>
+<ion-view left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background" >
+
+
+  <ion-nav-buttons side="right">
+    <button class="button" style = "background-color: transparent; color: #fff; font-size: 20px; padding:6px" ng-click="exit()">
+       Sign Out
+    </button>
+  </ion-nav-buttons>
+  <ion-content style = "height: 100%">
+
     <ion-list>
 <!--       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="datum in data" type="item-text-wrap" href="#/tab/data/{{datum.id}}">
 {{datum}}
       </ion-item> -->
-      <div class= "rpm"><h class = "rmp-title">RPM</h><br><br><h class = "rmp-title">{{lastRPM}}</h></div>
+    
       <div style = "background-color:#fff">
-      <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series = "series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"> </canvas> </div>
+<canvas style = "height: " id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series = "series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"> </canvas> </div>
+
+<div class = "rmp-title" style = "height: 40px; margin: auto; margin-top: 30px;  text-align: center; color: #FFF">{{name}}</div>
+<div  style= "background-color: #fff!important; width: 100%; height: 1000px; margin-top: 10px">
+
+<ion-radial-progress timer="{{lastRPM}}"></ion-radial-progress>
+   
     </ion-list>
-  </ion-content>
+
+
+
 </ion-view>
