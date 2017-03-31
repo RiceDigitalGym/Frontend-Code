@@ -6,13 +6,9 @@
             restrict: "E",
             transclue: !0,
             replace: !0,
-            scope: {
-                timer: "="
-            },
-            controller: ["$scope", function(t) {
-                t.seconds = t.timer
-            }],
-            templateUrl: n.substring(0, n.lastIndexOf("/") + 1) + "../templates/ion-radial-progress.html"
+            templateUrl: function(elem, attr){
+                return n.substring(0, n.lastIndexOf("/") + 1) + "../templates/ion-radial-progress.html"
+            }
         }
     }])
 }(window.angular);

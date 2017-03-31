@@ -1,10 +1,13 @@
 
-var API_ENDPOINT = "http://52.34.141.31:8000/bbb"
-// var API_ENDPOINT = "http://localhost:8000/bbb"
+// var API_ENDPOINT = "http://52.34.141.31:8000/bbb"
+var API_ENDPOINT = "http://localhost:8000/bbb"
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {
+.controller('ProfileController', function($scope, $http) {
+  $scope.$on('$ionicView.loaded', function () {
 
+
+  })
 })
 .controller('EmailCtrl', function($scope, $http, $state){
   $scope.formData = {}
@@ -52,7 +55,6 @@ angular.module('starter.controllers', [])
               $state.go("login")
             }
             else{
-              console.log("user has a name")
               localStorage.name = list.data.user.name
               localStorage.email = list.data.user.email
               localStorage.gender = list.data.user.gender
@@ -72,6 +74,11 @@ angular.module('starter.controllers', [])
 })
 .controller('DataCtrl', function($scope, $http, $timeout, $state) {
 
+
+  
+  $scope.gt50 = function() {
+        return $scope.deg > 180
+  }
   $scope.name = localStorage.name
   $scope.exit  = function(){
     $http.post(API_ENDPOINT + "/logout", {userId: localStorage.userId}).then(function(response){
@@ -108,22 +115,51 @@ angular.module('starter.controllers', [])
       ]
     }
   };
+String.prototype.toHHMMSS = function () {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds;
+}
+$scope.current_duration = 0
+$scope.current_duration_formatted = "00:00:00"
 $scope.$on('$ionicView.loaded', function () {
+  $http.get(API_ENDPOINT + "/workout_duration").then(function(duration){
+
+    $scope.current_duration = parseInt(duration.data.duration)
+    $scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
+    
+    (function count(){
+      $scope.current_duration = $scope.current_duration+1
+      $scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
+      console.log($scope.current_duration_formatted)
+
+      $timeout(count, 1000)
+    })()
+  })
+  console.log(API_ENDPOINT + "/average_duration")
+  $http.get(API_ENDPOINT + "/average_duration").then(function(response){
+    console.log("hello")
+    $scope.avg = response.data.duration
+  })
+
       localStorage.sessionBegin = (new Date).getTime();
      (function tick() {
       var old_timestamp = $scope.sessionPickup||localStorage.sessionBegin;
       $scope.sessionPickup = (new Date).getTime();
       $http.get(API_ENDPOINT + "/data/last").then(function(list) {
-            
-
             //var val = $scope.averageRPM(list.data.slice(list.data.length-50, list.data.length-1))
             var rpm = list.data.rpm
             $scope.data[0].push(rpm)
             $scope.rpm_data = [0, rpm-200, rpm]
-            $scope.lastRPM = rpm
-            //$scope.lastRPM = val
+            $scope.lastRPM = parseInt(rpm)
+            $scope.deg = rpm*360.0/200.0
             $scope.labels.push("")
-
             if($scope.data[0].length>50){
               $scope.data[0].shift()
               $scope.labels.shift()

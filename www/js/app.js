@@ -53,6 +53,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'chart.js', 'ion-radi
       controller: 'DataCtrl'
     }
   }}
+  ).state('tab.dash',{
+      url: "/dash",
+      views: {
+      'tab-dash': {
+      templateUrl: "templates/tab-dash.html",
+      controller: 'ProfileController'
+    }
+  }}
+  ).state('tab.about',{
+      url: "/about",
+      views: {
+      'tab-about': {
+      templateUrl: "templates/tab-about.html",
+      controller: 'AboutController'
+    }
+  }}
   ) .state('home', {
     url: "/home",
     cache: false,

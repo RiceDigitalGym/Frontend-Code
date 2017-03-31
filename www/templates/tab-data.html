@@ -2,7 +2,7 @@
 
 
   <ion-nav-buttons side="right">
-    <button class="button" style = "background-color: transparent; color: #fff; font-size: 20px; padding:6px" ng-click="exit()">
+    <button class="button" style = "background-color: transparent; color: #fff; font-size: 20px; padding:2px" ng-click="exit()">
        Sign Out
     </button>
   </ion-nav-buttons>
@@ -13,13 +13,27 @@
 {{datum}}
       </ion-item> -->
     
-      <div style = "background-color:#fff">
+<div style = "background-color:#fff">
 <canvas style = "height: " id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series = "series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"> </canvas> </div>
 
-<div class = "rmp-title" style = "height: 40px; margin: auto; margin-top: 30px;  text-align: center; color: #FFF">{{name}}</div>
-<div  style= "background-color: #fff!important; width: 100%; height: 1000px; margin-top: 10px">
+<!-- <div class = "rmp-title" style = "height: 30px; margin: auto; margin-top: 20px;  text-align: center; color: #FFF; font-weight: 100">{{name}}</div> -->
+<div style= "background-color: #fff!important; width: 100%; height: 400px; ">
 
-<ion-radial-progress timer="{{lastRPM}}"></ion-radial-progress>
+<div style = "float:left; width: 30%; padding-top: 20px; margin-left: 10px">
+  <ion-radial-progress style ="margin: auto;">
+  
+  </ion-radial-progress>
+</div>
+
+<div style = "float: left; padding-left: 30px; padding-top: 40px; width: 60%; text-align: center ">
+<div >
+<div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 25px; font-weight: bold; color:#3288C9;text-align: center">YOUR WORKOUT DURATION</div>
+<div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 50px; font-weight: bold; color:#3288C9; text-align: center; margin-top: 15px">{{current_duration_formatted}}</div>
+<div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 25px; font-weight: bold; color:#AAA;text-align: center; margin-top: 30px">AVERAGE WORKOUT DURATION</div>
+<div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 50px; font-weight: bold; color:#AAA; text-align: center; margin-top: 15px">{{avg}}</div>
+</div>
+</div>
+
    
     </ion-list>
 
