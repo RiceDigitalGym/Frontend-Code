@@ -6,7 +6,10 @@ angular.module('starter.controllers', [])
 .controller('ProfileController', function($scope, $http) {
   // $scope.name = localStorage.name
   $scope.$on('$ionicView.loaded', function () {
-
+    $scope.name = localStorage.name
+    if(!$scope.name){
+      $scope.name = "undefined"
+    }
 
   })
 })

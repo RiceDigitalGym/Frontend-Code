@@ -1,23 +1,24 @@
 <ion-view left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background" >
+<ion-view hide-nav-bar="true"> 
 
-
+<!-- 
   <ion-nav-buttons side="right">
     <button class="button" style = "background-color: transparent; color: #fff; font-size: 20px; padding:2px" ng-click="exit()">
        Sign Out
     </button>
-  </ion-nav-buttons>
+  </ion-nav-buttons> -->
   <ion-content style = "height: 100%">
 
     <ion-list>
 <!--       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="datum in data" type="item-text-wrap" href="#/tab/data/{{datum.id}}">
 {{datum}}
       </ion-item> -->
-    
-<div style = "background-color:#fff">
+
+<div style = "background-color:#fff; margin-top: 0px;">
 <canvas height = "200" id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series = "series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"> </canvas> </div>
 
 <!-- <div class = "rmp-title" style = "height: 30px; margin: auto; margin-top: 20px;  text-align: center; color: #FFF; font-weight: 100">{{name}}</div> -->
-<div style= "background-color: #fff!important; width: 100%; height: 400px; ">
+<div style= "background-color: #fff!important; width: 100%; height: 500px; ">
 
 <div style = "float:left; width: 30%; padding-top: 20px; margin-left: 10px">
   <ion-radial-progress style ="margin: auto;">
@@ -32,9 +33,9 @@
 <div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 25px; font-weight: bold; color:#AAA;text-align: center; margin-top: 30px">AVERAGE WORKOUT DURATION</div>
 <div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 50px; font-weight: bold; color:#AAA; text-align: center; margin-top: 15px">{{avg}}</div>
 </div>
-</div>
 
-   
+
+   </div>
     </ion-list>
 
 
