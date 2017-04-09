@@ -1,9 +1,10 @@
 
-// var API_ENDPOINT = "http://52.34.141.31:8000/bbb"
-var API_ENDPOINT = "http://localhost:8000/bbb"
+var API_ENDPOINT = "http://52.34.141.31:8000/bbb"
+// var API_ENDPOINT = "http://localhost:8000/bbb"
 angular.module('starter.controllers', [])
 
 .controller('ProfileController', function($scope, $http) {
+  // $scope.name = localStorage.name
   $scope.$on('$ionicView.loaded', function () {
 
 
@@ -48,8 +49,7 @@ angular.module('starter.controllers', [])
       $scope.sessionPickup = (new Date).getTime();
       $http.get(API_ENDPOINT + "/sessionlisten").then(function(list) {
 
-        if(list.data.status == "success"){
-          console.log(list.data.user)
+        if(list.data.status == "success" && list.data.user!=null){
             if (list.data.user.name == null || list.data.user.name == "null"){
               localStorage.userId = list.data.user.id
               $state.go("login")
@@ -171,7 +171,7 @@ $scope.$on('$ionicView.loaded', function () {
 
 
 })
-.controller('AccountCtrl', function($scope) {
+.controller('AboutController', function($scope) {
   $scope.settings = {
     enableFriends: true
   };

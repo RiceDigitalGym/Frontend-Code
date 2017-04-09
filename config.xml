@@ -81,4 +81,8 @@
   <icon src="resources/ios/icon/icon-small@3x.png"/>
   <allow-navigation href="http://10.119.77.22:8100"/>
   <allow-navigation href="http://10.112.79.213:8100"/>
+  <allow-navigation href="http://10.115.77.122:8100"/>
+  <allow-navigation href="*"/>
+  <allow-intent href="http://*/*" launch-external="yes"/>
+  <allow-intent href="https://*/*" launch-external="yes"/>
 </widget>
