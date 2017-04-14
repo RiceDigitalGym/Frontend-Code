@@ -137,3 +137,51 @@ div#rounded{
 
 	padding-top:50px;
 }
+
+
+
+.name{
+  font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default;
+  font-size: 30px;
+  color:white; 
+  margin-top:40px;
+}
+.lastworkout{
+  font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default;
+  font-size: 15px;
+  color:#AAA;
+  margin-top: 15px;
+}
+.profile-image{
+  border-style: solid; 
+  border-radius: 50%;
+  width: 150px; 
+  height: 150px; 
+  border-width: 2px; 
+  border-color: white
+}
+.profile-image-container{
+  position: absolute;
+  top: 150px;
+  left: 10px;
+  width: 150px;
+  height: 150px;
+  z-index: 1000;
+}
+.profile-text-container{
+  position: absolute; 
+  top: 180px; 
+  left: 180px;
+  width: 500px;
+  height: 150px; 
+  z-index: 1000;
+}
+.workout-history-container{
+  margin-top: 250px;
+  width: 100%; 
+  background-color: white; 
+  height: 10000px;
+}
+.absolute-margin{
+  margin: -250px
+}

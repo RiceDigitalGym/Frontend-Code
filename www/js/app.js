@@ -1,14 +1,9 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'chart.js', 'ion-radial-progress'])
+console.log("using this file")
+angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
 
 
 .run(function($ionicPlatform) {
+  console.log("using this file2")
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -31,20 +26,21 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
-
+  console.log("here")
   $stateProvider.state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
-    controller: "LoginCtrl"
+    controller: "LoginController"
   })
   .state('email', {
     url: '/email',
     templateUrl: 'templates/email.html',
-    controller: "EmailCtrl"
+    controller: "EmailController"
   })
   $stateProvider.state('tab', {
     url: '/tab',
     templateUrl: 'templates/tabs.html',
+    controller: "NavigationController",
     abstract: true
   })
   .state('tab.data',{
@@ -52,7 +48,7 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
       views: {
       'tab-data': {
       templateUrl: "templates/tab-data.html",
-      controller: 'DataCtrl'
+      controller: 'DataController'
     }
   }}
   ).state('tab.dash',{
@@ -84,5 +80,9 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
  
 
 });
+
+
+require('../services')
+require('../controllers');
 
 
