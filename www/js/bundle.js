@@ -74,8 +74,8 @@ var GLOBALS = {};
 
 
 APP_CONFIG = {
-	API_ENDPOINT : "http://52.34.141.31:8000/bbb"
-    // API_ENDPOINT : "http://localhost:8000/bbb"
+	// API_ENDPOINT : "http://52.34.141.31:8000/bbb"
+    API_ENDPOINT : "http://localhost:8000/bbb"
 }
 
 
@@ -88,14 +88,23 @@ angular.module(GLOBALS.APP_NAME).constant("APP_CONFIG", APP_CONFIG)
 /* 1 */
 /***/ (function(module, exports) {
 
-ProfileController.$inject = ["$scope"]
-function ProfileController($scope) {
+ProfileController.$inject = ["$scope", "UserService"]
+function ProfileController($scope, UserService) {
 
   	//Set display name
     $scope.name = localStorage.name
     if(!$scope.name){
       $scope.name = "undefined"
     }
+
+    //getting past workout data for user
+    $scope.history = []
+    UserService.history(localStorage.userId).then(function(history){
+    	console.log(history)
+    	console.log("response")
+    	$scope.history = history
+    })
+
 
 }
 
@@ -543,6 +552,11 @@ function UserService($http, APP_CONFIG){
 		return $http.post(APP_CONFIG.API_ENDPOINT+ "/addname", {name: name, userId: id}).then(function(response){
           return response.data
        })
+	}
+	this.history = function(id){
+		return $http.post(APP_CONFIG.API_ENDPOINT+ "/history", {userId: id}).then(function(response){
+			return response.data
+		})
 	}
 
 

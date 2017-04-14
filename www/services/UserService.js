@@ -18,8 +18,10 @@ function UserService($http, APP_CONFIG){
           return response.data
        })
 	}
-
-
-		
+	this.history = function(id){
+		return $http.post(APP_CONFIG.API_ENDPOINT+ "/history", {userId: id}).then(function(response){
+			return response.data
+		})
+	}	
 }
 module.exports = UserService

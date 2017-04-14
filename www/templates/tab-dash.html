@@ -1,5 +1,5 @@
 <ion-view  left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background">
-<ion-view hide-nav-bar="true">
+<ion-view hide-nav-bar="true"><
   <ion-content>
 
   	<div class = "profile-image-container">
@@ -13,7 +13,22 @@
   	</div>
 
   	<div class = "workout-history-container">
-  	</div>
+     <div style = "margin-top: 20px; padding-top: 60px; padding-left: 10px; padding-right: 20px">
+        <div ng-repeat= "workout in history" style = "width: 100%; height: 150px; text-align: left" class="card" >
 
-  </ion-content>
-</ion-view>
+  
+
+<div style = "width: 100%; height: 50px;">
+<p class = "lastworkout" style = "float: right; margin-right: 10px; font-size: 20px;font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default;">February 3, 2017</p>
+</div>
+<p style = "margin-left: 10px; float: left; width: 100%">Average RPM: {{workout.average_rpm}} rpm</p>
+<p style = "margin-left: 10px; float: left; width: 100%" >Duration: {{workout.duration}}</p>
+<p style = "margin-left: 10px; float: left; width: 100%">Distance: {{workout.distance}} mi</p>
+
+
+            
+  </div>
+</div>
+</div>
+</ion-content>
+</ion-view></ion-view>
