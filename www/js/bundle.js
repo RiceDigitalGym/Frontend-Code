@@ -74,8 +74,8 @@ var GLOBALS = {};
 
 
 APP_CONFIG = {
-	// API_ENDPOINT : "http://52.34.141.31:8000/bbb"
-    API_ENDPOINT : "http://localhost:8000/bbb"
+	API_ENDPOINT : "http://52.34.141.31:8000/bbb"
+    // API_ENDPOINT : "http://localhost:8000/bbb"
 }
 
 
@@ -423,7 +423,6 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
-  console.log("here")
   $stateProvider.state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',
@@ -557,10 +556,7 @@ function UserService($http, APP_CONFIG){
 		return $http.post(APP_CONFIG.API_ENDPOINT+ "/history", {userId: id}).then(function(response){
 			return response.data
 		})
-	}
-
-
-		
+	}	
 }
 module.exports = UserService
 

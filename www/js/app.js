@@ -26,7 +26,6 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
-  console.log("here")
   $stateProvider.state('login', {
     url: '/login',
     templateUrl: 'templates/login.html',

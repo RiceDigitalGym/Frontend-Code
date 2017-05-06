@@ -2,8 +2,8 @@ var GLOBALS = {};
 
 
 APP_CONFIG = {
-	// API_ENDPOINT : "http://52.34.141.31:8000/bbb"
-    API_ENDPOINT : "http://localhost:8000/bbb"
+	API_ENDPOINT : "http://52.34.141.31:8000/bbb"
+    // API_ENDPOINT : "http://localhost:8000/bbb"
 }
 
 
