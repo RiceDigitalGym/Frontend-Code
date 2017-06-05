@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -74,8 +74,8 @@ var GLOBALS = {};
 
 
 APP_CONFIG = {
-	API_ENDPOINT : "http://52.34.141.31:8000/bbb"
-    // API_ENDPOINT : "http://localhost:8000/bbb"
+	//API_ENDPOINT : "http://52.34.141.31:8000/bbb"
+    API_ENDPOINT : "http://127.0.0.1:8000/bbb"
 }
 
 
