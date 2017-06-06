@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -63,12 +63,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 var GLOBALS = {};
 
@@ -84,9 +84,9 @@ GLOBALS.APP_NAME = "DigitalGym"
 module.exports = GLOBALS
 angular.module(GLOBALS.APP_NAME).constant("APP_CONFIG", APP_CONFIG)
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 ProfileController.$inject = ["$scope", "SessionService", "UserService"]
 function ProfileController($scope, SessionService, UserService) {
@@ -115,9 +115,9 @@ function ProfileController($scope, SessionService, UserService) {
 
 module.exports = ProfileController;
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 var GLOBALS = __webpack_require__(0)
 var loginController = __webpack_require__(7)
@@ -139,17 +139,17 @@ angular.module(GLOBALS.APP_NAME)
 
 	
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var GLOBALS = __webpack_require__(0);
-var dataService = __webpack_require__(9)
-var sessionService = __webpack_require__(10)
-var userService = __webpack_require__(11)
+var dataService = __webpack_require__(10)
+var sessionService = __webpack_require__(11)
+var userService = __webpack_require__(12)
 
 angular
     .module(GLOBALS.APP_NAME)
@@ -161,9 +161,9 @@ angular
 
 
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 DataController.$inject = ['$scope', '$timeout', '$state', 'DataService', 'UserService', 'SessionService'];
 
@@ -268,9 +268,9 @@ $scope.$on('$ionicView.loaded', function () {
 
 module.exports = DataController
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 EmailController.$inject = ["$scope", "$state", "UserService"]
 
@@ -318,9 +318,9 @@ function EmailController($scope, $state, UserService){
 
 module.exports = EmailController;
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 HomeController.$inject = ["$scope", "$timeout", "$state", "SessionService", "$http"]
 
@@ -356,9 +356,9 @@ function HomeController($scope, $timeout, $state, SessionService, $http){
 
 module.exports = HomeController;
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 LoginController.$inject = ['$scope', '$state', 'UserService']
 function LoginController($scope, $state, UserService){
@@ -378,9 +378,9 @@ function LoginController($scope, $state, UserService){
 
 module.exports = LoginController;
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 NavigationController.$inject = ["$scope", 'UserService', '$state']
 function NavigationController($scope, UserService, $state) {
@@ -394,90 +394,9 @@ function NavigationController($scope, UserService, $state) {
 
 module.exports = NavigationController;
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-DataService.$inject = ['$http', 'APP_CONFIG']
-function DataService($http, APP_CONFIG){
-	this.getLastData = function(){
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/data/last").then(function(list) {
-			console.log(list)
-			return list.data
-		})
-	}
-}
-module.exports = DataService
-
-/***/ },
-/* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-SessionService.$inject = ['$http', 'APP_CONFIG']
-function SessionService($http, APP_CONFIG){
-	this.getAverageDuration = function(){
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/average_duration").then(function(duration){
-    		return duration.data
-  		})
-	}
-	this.getWorkoutDuration = function(){
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/workout_duration").then(function(duration){
-			return duration.data
- 		 })
-	}
-	this.getLastWorkout = function(){
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/get_last_workout").then(function(response){
-			return response.data
-		})
-	}
-	this.listen = function(){
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/sessionlisten").then(function(list) {
-			return list.data
-		});
-	}
-}
-module.exports = SessionService
-
-/***/ },
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-"use strict";
-
-UserService.$inject = ['$http', 'APP_CONFIG']
-function UserService($http, APP_CONFIG){
-	this.logout = function(id){
-		return $http.post(APP_CONFIG.API_ENDPOINT + "/logout", {userId: id}).then(function(response){
-      		return response.data
-    	})
-	}
-	this.updateUser = function(name, id, gender){
-		return $http.post(APP_CONFIG.API_ENDPOINT+ "/addemailgender", {name: name, userId: id, gender: gender}).then(function(response){
-      		console.log(response.data)
-      		return response.data
-    	})
-	}
-	this.addName = function(name, id){
-
-		return $http.post(APP_CONFIG.API_ENDPOINT+ "/addname", {name: name, userId: id}).then(function(response){
-          return response.data
-       })
-	}
-	this.history = function(id){
-		return $http.post(APP_CONFIG.API_ENDPOINT+ "/history", {userId: id}).then(function(response){
-			return response.data
-		})
-	}	
-}
-module.exports = UserService
-
-/***/ },
-/* 12 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 console.log("using this file")
 angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
@@ -568,5 +487,86 @@ __webpack_require__(2);
 
 
 
-/***/ }
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+DataService.$inject = ['$http', 'APP_CONFIG']
+function DataService($http, APP_CONFIG){
+	this.getLastData = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/data/last").then(function(list) {
+			console.log(list)
+			return list.data
+		})
+	}
+}
+module.exports = DataService
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+SessionService.$inject = ['$http', 'APP_CONFIG']
+function SessionService($http, APP_CONFIG){
+	this.getAverageDuration = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/average_duration").then(function(duration){
+    		return duration.data
+  		})
+	}
+	this.getWorkoutDuration = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/workout_duration").then(function(duration){
+			return duration.data
+ 		 })
+	}
+	this.getLastWorkout = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/get_last_workout").then(function(response){
+			return response.data
+		})
+	}
+	this.listen = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/sessionlisten").then(function(list) {
+			return list.data
+		});
+	}
+}
+module.exports = SessionService
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+UserService.$inject = ['$http', 'APP_CONFIG']
+function UserService($http, APP_CONFIG){
+	this.logout = function(id){
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/logout", {userId: id}).then(function(response){
+      		return response.data
+    	})
+	}
+	this.updateUser = function(name, id, gender){
+		return $http.post(APP_CONFIG.API_ENDPOINT+ "/addemailgender", {name: name, userId: id, gender: gender}).then(function(response){
+      		console.log(response.data)
+      		return response.data
+    	})
+	}
+	this.addName = function(name, id){
+
+		return $http.post(APP_CONFIG.API_ENDPOINT+ "/addname", {name: name, userId: id}).then(function(response){
+          return response.data
+       })
+	}
+	this.history = function(id){
+		return $http.post(APP_CONFIG.API_ENDPOINT+ "/history", {userId: id}).then(function(response){
+			return response.data
+		})
+	}	
+}
+module.exports = UserService
+
+/***/ })
 /******/ ]);
