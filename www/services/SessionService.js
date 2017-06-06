@@ -1,15 +1,20 @@
 'use strict';
 SessionService.$inject = ['$http', 'APP_CONFIG']
 function SessionService($http, APP_CONFIG){
+	this.getAverageDuration = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/average_duration").then(function(duration){
+    		return duration.data
+  		})
+	}
 	this.getWorkoutDuration = function(){
 		return $http.get(APP_CONFIG.API_ENDPOINT + "/workout_duration").then(function(duration){
 			return duration.data
  		 })
 	}
-	this.getAverageDuration = function(){
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/average_duration").then(function(duration){
-    		return duration.data
-  		})
+	this.getLastWorkout = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/get_last_workout").then(function(response){
+			return response.data
+		})
 	}
 	this.listen = function(){
 		return $http.get(APP_CONFIG.API_ENDPOINT + "/sessionlisten").then(function(list) {

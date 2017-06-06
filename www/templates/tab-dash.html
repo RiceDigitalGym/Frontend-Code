@@ -1,4 +1,4 @@
-<ion-view  left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background">
+h<ion-view  left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background">
 <ion-view hide-nav-bar="true"><
   <ion-content>
 
@@ -9,7 +9,7 @@
     <div class = "profile-text-container">
      <div class = "absolute-margin"></div>
   	 <p class = "name">{{name}}</p>
-  	 <p class = "lastworkout">Last workout: 2/3/17</p>
+  	 <p class = "lastworkout">Last workout: {{lastworkout != "" ? lastworkout : "No recent workouts found."}}</p>
   	</div>
 
   	<div class = "workout-history-container">
@@ -19,10 +19,12 @@
   
 
 <div style = "width: 100%; height: 50px;">
-<p class = "lastworkout" style = "float: right; margin-right: 10px; font-size: 20px;font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default;">{{workout.date}}</p> 
+
+<p class = "lastworkout" style = "float: right; margin-right: 10px; font-size: 20px;font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default;">Date: {{workout.date}}</p>
+
 </div>
 <p style = "margin-left: 10px; float: left; width: 100%">Average RPM: {{workout.average_rpm}} rpm</p>
-<p style = "margin-left: 10px; float: left; width: 100%" >Duration: {{workout.duration}}</p>
+<p style = "margin-left: 10px; float: left; width: 100%">Duration: {{workout.duration}}</p>
 <p style = "margin-left: 10px; float: left; width: 100%">Distance: {{workout.distance}} mi</p>
 
 
