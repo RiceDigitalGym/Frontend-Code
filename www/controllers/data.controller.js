@@ -74,8 +74,6 @@ $scope.current_duration_formatted = "00:00:00"
     }
   })
 
-
-
 $scope.$on('$ionicView.loaded', function () {
     //Requests the last data point in the database
     //Todo: Make this bike specific

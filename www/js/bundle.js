@@ -6,9 +6,9 @@
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -74,7 +74,8 @@ var GLOBALS = {};
 
 
 APP_CONFIG = {
-	API_ENDPOINT : "http://52.34.141.31:8000/bbb"
+	API_ENDPOINT : "http://0.0.0.0:8000/bbb"
+	// API_ENDPOINT : "http://52.34.141.31:8000/bbb"
     // API_ENDPOINT : "http://localhost:8000/bbb"
 }
 
@@ -88,8 +89,8 @@ angular.module(GLOBALS.APP_NAME).constant("APP_CONFIG", APP_CONFIG)
 /* 1 */
 /***/ (function(module, exports) {
 
-ProfileController.$inject = ["$scope", "UserService"]
-function ProfileController($scope, UserService) {
+ProfileController.$inject = ["$scope", "SessionService", "UserService"]
+function ProfileController($scope, SessionService, UserService) {
 
   	//Set display name
     $scope.name = localStorage.name
@@ -105,6 +106,11 @@ function ProfileController($scope, UserService) {
     	$scope.history = history
     })
 
+    $scope.lastworkout = ""
+    SessionService.getLastWorkout().then(function(response){
+        console.log(response)
+        $scope.lastworkout = response.date
+    })
 
 }
 
@@ -235,8 +241,6 @@ $scope.current_duration_formatted = "00:00:00"
       $scope.avg = duration.duration
     }
   })
-
-
 
 $scope.$on('$ionicView.loaded', function () {
     //Requests the last data point in the database
@@ -509,15 +513,20 @@ module.exports = DataService
 
 SessionService.$inject = ['$http', 'APP_CONFIG']
 function SessionService($http, APP_CONFIG){
+	this.getAverageDuration = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/average_duration").then(function(duration){
+    		return duration.data
+  		})
+	}
 	this.getWorkoutDuration = function(){
 		return $http.get(APP_CONFIG.API_ENDPOINT + "/workout_duration").then(function(duration){
 			return duration.data
  		 })
 	}
-	this.getAverageDuration = function(){
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/average_duration").then(function(duration){
-    		return duration.data
-  		})
+	this.getLastWorkout = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/get_last_workout").then(function(response){
+			return response.data
+		})
 	}
 	this.listen = function(){
 		return $http.get(APP_CONFIG.API_ENDPOINT + "/sessionlisten").then(function(list) {
