@@ -71,6 +71,8 @@ $scope.current_duration_formatted = "00:00:00"
   SessionService.getAverageDuration().then(function(duration){
     if(duration.success){
       $scope.avg = duration.duration
+    } else {
+      $scope.avg = "00:00:00"
     }
   })
 

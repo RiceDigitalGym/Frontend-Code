@@ -15,6 +15,21 @@ function ProfileController($scope, UserService) {
     	$scope.history = history
     })
 
+    // function getLastWorkout() {
+    //     var most_recent_date = NUMBER.NEGATIVE_INFINITY
+    //     for (workout in $scope.history) {
+    //         var date = Date.parse(history[inc].createdAt)
+    //         if (date > most_recent_date) {
+    //             most_recent_date = date
+    //         }
+    //     }
+    //     if (most_recent_date != NUMBER.NEGATIVE_INFINITY) {
+    //         return (new Date(most_recent_date)).toDateString()
+    //     }
+    //     else {
+    //         return "No recent workouts found."
+    //     }
+    // }
     $scope.lastworkout = ""
     UserService.getLastWorkout().then(function(response){
         console.log(response)
