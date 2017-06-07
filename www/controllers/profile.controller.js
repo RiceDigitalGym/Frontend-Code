@@ -1,5 +1,5 @@
-ProfileController.$inject = ["$scope", "SessionService", "UserService"]
-function ProfileController($scope, SessionService, UserService) {
+ProfileController.$inject = ["$scope", "UserService"]
+function ProfileController($scope, UserService) {
 
   	//Set display name
     $scope.name = localStorage.name
@@ -16,7 +16,7 @@ function ProfileController($scope, SessionService, UserService) {
     })
 
     $scope.lastworkout = ""
-    SessionService.getLastWorkout().then(function(response){
+    UserService.getLastWorkout().then(function(response){
         console.log(response)
         $scope.lastworkout = response.date
     })

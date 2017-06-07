@@ -18,6 +18,11 @@ function UserService($http, APP_CONFIG){
           return response.data
        })
 	}
+	this.getLastWorkout = function(){
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/get_last_workout").then(function(response){
+			return response.data
+		})
+	}
 	this.history = function(id){
 		return $http.post(APP_CONFIG.API_ENDPOINT+ "/history", {userId: id}).then(function(response){
 			return response.data
