@@ -17,6 +17,7 @@ function HomeController($scope, $timeout, $state, SessionService, $http){
               localStorage.name = list.user.name
               localStorage.email = list.user.email
               localStorage.gender = list.user.gender
+              //another data point
               localStorage.userId = list.user.id
               //redirect
               $state.go("tab.data")
