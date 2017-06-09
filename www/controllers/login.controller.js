@@ -1,11 +1,11 @@
 LoginController.$inject = ['$scope', '$state', 'UserService']
 function LoginController($scope, $state, UserService){
-  $scope.submitName  = function(){
-    if($scope.formData.name){
+  $scope.submitLogin  = function(){
+    if($scope.formData.username && $scope.formData.password) {
 
-      localStorage.name = $scope.formData.name
+      localStorage.name = $scope.formData.username    
       //Adding name to database and going to next page
-      UserService.addName($scope.formData.name, localStorage.userId).then(function(response){
+      UserService.addName($scope.formData.username, localStorage.userId).then(function(response){
           if(response.status == "success"){
               $state.go('email')
           }
