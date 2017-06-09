@@ -31,11 +31,16 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
     templateUrl: 'templates/login.html',
     controller: "LoginController"
   })
-  .state('email', {
-    url: '/email',
-    templateUrl: 'templates/email.html',
-    controller: "EmailController"
+  .state('setup', {
+    url: '/setup_account',
+    templateUrl: 'templates/setup.html',
+    controller: "SetupController"
   })
+  // .state('email', {
+  //   url: '/email',
+  //   templateUrl: 'templates/email.html',
+  //   controller: "EmailController"
+  // })
   $stateProvider.state('tab', {
     url: '/tab',
     templateUrl: 'templates/tabs.html',

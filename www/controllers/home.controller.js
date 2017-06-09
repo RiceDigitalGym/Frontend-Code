@@ -7,10 +7,10 @@ function HomeController($scope, $timeout, $state, SessionService, $http){
       SessionService.listen().then(function(list){
         if(list.status == "success" && list.user!=null){
 
-            if (list.user.name == null || list.user.name == "null"){
+            if (list.user.email == null || list.user.email == "null"){
               //If the user has not set name, direct them to do so before giving access to app.
               localStorage.userId = list.user.id
-              $state.go("login")
+              $state.go("setup")
             }
             else{
               //If the user has set their name, set user data and continue to app

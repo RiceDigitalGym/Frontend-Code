@@ -1,8 +1,35 @@
-EmailController.$inject = ["$scope", "$state", "UserService"]
+// Add more appropriate data inputs in the future!
 
-function EmailController($scope, $state, UserService){
+SetupController.$inject = ["$scope", "$state", "UserService"]
 
-  //Really dumb way to create this multiple choice gender selection. Could be more elegant.
+function SetupController($scope, $state, UserService){
+  $scope.setupAccount = function(){
+
+    localStorage.email = $scope.formData.email
+
+    UserService.setupAccount(localStorage.userId, $scope.formData.email, $scope.formData.password).then(function(response){
+      if(response.status == "success"){
+        $state.go('tab.data')
+      }
+    })
+
+  }
+
+}
+
+
+
+module.exports = SetupController;
+
+
+
+
+
+// ----------------
+
+//Really dumb way to create this multiple choice gender selection. Could be more elegant.
+
+/*
   $scope.formData = {}
   $scope.male = "button1"
   $scope.female = "button2"
@@ -35,11 +62,4 @@ function EmailController($scope, $state, UserService){
         $state.go('tab.data')
       }
     })
-
-    
-
-  }
-}
-
-
-module.exports = EmailController;
+  */
