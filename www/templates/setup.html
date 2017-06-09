@@ -4,6 +4,10 @@
   <img style = "width:100%" src='img/question_mark.png'></img>
     </div>
 
+      <label id = "rounded" class="item item-input">
+          <input id= "name-input" type="text" placeholder = "Name" ng-model="formData.name">
+      </label>
+
       <div class="list list-inset">
           <label class="item item-input">
               <input type="text" placeholder="Email" ng-model="formData.email">
@@ -13,7 +17,18 @@
           </label>
       </div>
           <button class="button button-block button-calm" ng-click="setupAccount()">Setup Account</button>
+
       </div>
 
   </label>
 </ion-view>
+
+
+<!--
+
+  <div id = "login-title-holder"><h id = "login-title">Enter Your Full Name to Get Started</h></div>
+  
+  
+  <br>
+    <div id = "rounded" ng-click="submitName()"><p id = "submitBtn">Continue</o></div>
+-->

@@ -1,8 +1,13 @@
 'use strict';
 UserService.$inject = ['$http', 'APP_CONFIG']
 function UserService($http, APP_CONFIG){
-	this.setupAccount = function(id, email, password) {
-		return $http.post(APP_CONFIG.API_ENDPOINT + "/setup_account", {userId: id, email: email, password: password}).then(function(response) {
+	this.setupAccount = function(id, name, email, password) {
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/setup_account", {userId: id, name: name, email: email, password: password}).then(function(response) {
+			return response.data
+		})
+	}
+	this.login = function(email, password) {
+		return $http.get(APP_CONFIG.API_ENDPOINT + "/login", {email: email, password: password}).then(function(response) {
 			return response.data
 		})
 	}
