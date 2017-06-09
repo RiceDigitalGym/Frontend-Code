@@ -2,7 +2,19 @@
 <ion-view hide-nav-bar="true">
   <div id ="titleImage" style = "text-align: center; margin:auto; margin-bottom: 30px;">
   <img style = "width:100%" src='img/question_mark.png'></img>
-</div>
+    </div>
+
+      <div class="list list-inset">
+          <label class="item item-input">
+              <input type="text" placeholder="Username" ng-model="data.username">
+          </label>
+          <label class="item item-input">
+              <input type="password" placeholder="Password" ng-model="data.password">
+          </label>
+      </div>
+      <button class="button button-block button-calm" ng-click="login()">Login</button>
+<!--
+
 	<div id = "login-title-holder"><h id = "login-title">Enter Your Full Name to Get Started</h></div>
   
   <label id = "rounded" class="item item-input">
@@ -10,6 +22,9 @@
     </label>
 	<br>
     <div id = "rounded" ng-click="submitName()"><p id = "submitBtn">Continue</o></div>
+-->
     </div>
+
+
   </label>
 </ion-view>
