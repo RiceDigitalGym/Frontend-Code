@@ -7,7 +7,7 @@ function UserService($http, APP_CONFIG){
 		})
 	}
 	this.login = function(email, password) {
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/login", {email: email, password: password}).then(function(response) {
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/login", {email: email, password: password}).then(function(response) {
 			return response.data
 		})
 	}
