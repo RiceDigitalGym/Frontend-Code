@@ -10,6 +10,9 @@ function LoginController($scope, $state, UserService){
           localStorage.email = response.user.email
           $state.go('tab.data')
         }
+        else {
+          window.alert("Incorrect email or password entered.")
+        }
       })
       
     }
