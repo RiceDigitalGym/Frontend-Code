@@ -36,6 +36,11 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
     templateUrl: 'templates/setup.html',
     controller: "SetupController"
   })
+  .state('tag', {
+    url: '/add_tag',
+    templateUrl: 'templates/tag.html',
+    controller: "TagController"
+  })
   // .state('email', {
   //   url: '/email',
   //   templateUrl: 'templates/email.html',
