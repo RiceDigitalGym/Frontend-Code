@@ -8,7 +8,7 @@ function LoginController($scope, $state, UserService){
           localStorage.userId = response.user.id
           localStorage.name = response.user.name
           localStorage.email = response.user.email
-          $state.go("tab.data")
+          $state.go('tab.data')
         }
       })
       
