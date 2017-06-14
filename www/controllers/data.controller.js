@@ -3,18 +3,18 @@ DataController.$inject = ['$scope', '$timeout', '$state', 'DataService', 'UserSe
 function DataController($scope, $timeout, $state, DataService, UserService, SessionService) {
 
 
-  //helper function for displaying formatted time
   String.prototype.toHHMMSS = function () {
-    var sec_num = parseInt(this, 10); // don't forget the second param
-    var hours   = Math.floor(sec_num / 3600);
-    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
-    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+  console.log(this)
+  // this should be in milliseconds, second parameter is the base (i.e., decimal)
+    var sec_num = parseInt(this, 10) / 1000
+    var hours   = Math.floor(sec_num / 3600)
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60)
+    var seconds = Math.floor(sec_num - (hours * 3600) - (minutes * 60))
 
-    if (hours   < 10) {hours   = "0"+hours;}
-    if (minutes < 10) {minutes = "0"+minutes;}
-    if (seconds < 10) {seconds = "0"+seconds;}
-    return hours+':'+minutes+':'+seconds;
-  }
+    return ((hours < 10) ? ("0" + String(hours)) : String(hours)) + ":" 
+    + ((minutes < 10) ? ("0" + String(minutes)) : String(minutes)) + ":" 
+    + ((seconds < 10) ? ("0" + String(seconds)) : String(seconds))
+}
 
   //used for radial display
   $scope.gt50 = function() {

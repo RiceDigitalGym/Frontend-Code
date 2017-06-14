@@ -37,15 +37,10 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
     controller: "SetupController"
   })
   .state('tag', {
-    url: '/add_tag',
+    url: '/tag',
     templateUrl: 'templates/tag.html',
     controller: "TagController"
   })
-  // .state('email', {
-  //   url: '/email',
-  //   templateUrl: 'templates/email.html',
-  //   controller: "EmailController"
-  // })
   $stateProvider.state('tab', {
     url: '/tab',
     templateUrl: 'templates/tabs.html',
@@ -55,20 +50,22 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
   .state('tab.data',{
       url: "/data",
       views: {
-      'tab-data': {
-      templateUrl: "templates/tab-data.html",
-      controller: 'DataController'
-    }
-  }}
-  ).state('tab.dash',{
+        'tab-data': {
+          templateUrl: "templates/tab-data.html",
+          controller: 'DataController'
+        }
+      }
+  })
+  .state('tab.dash',{
       url: "/dash",
       views: {
-      'tab-dash': {
-      templateUrl: "templates/tab-dash.html",
-      controller: 'ProfileController'
-    }
-  }}
-  ).state('tab.about',{
+        'tab-dash': {
+          templateUrl: "templates/tab-dash.html",
+          controller: 'ProfileController'
+        }
+      }
+  })
+  .state('tab.about',{
       url: "/about",
       views: {
       'tab-about': {
@@ -83,10 +80,8 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
     controller: 'HomeController'
   });
 
-  $urlRouterProvider.otherwise('/home')
-
   // if none of the above states are matched, use this as the fallback
- 
+  $urlRouterProvider.otherwise('/home') 
 
 });
 
