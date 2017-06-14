@@ -1,5 +1,5 @@
 TagController.$inject = ['$scope', '$state', 'UserService']
-function TagController($scope, $state, UserService){
+function TagController($scope, $state, UserService) {
   $scope.checkTag = function() {
   	var iterations = 0
 
@@ -15,6 +15,7 @@ function TagController($scope, $state, UserService){
     		}
     	})
   	}
+  	$state.go('tab.data')
   }
 }
 

@@ -26,60 +26,61 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
-  $stateProvider.state('login', {
-    url: '/login',
-    templateUrl: 'templates/login.html',
-    controller: "LoginController"
-  })
-  $stateProvider.state('setup', {
-    url: '/setup_account',
-    templateUrl: 'templates/setup.html',
-    controller: "SetupController"
-  })
-  $stateProvider.state('tag', {
-    url: '/tag',
-    templateUrl: 'templates/tag.html',
-    controller: "TagController"
-  })
-  $stateProvider.state('tab', {
-    url: '/tab',
-    templateUrl: 'templates/tabs.html',
-    controller: "NavigationController",
-    abstract: true
-  })
-  $stateProvider.state('tab.data',{
-      url: "/data",
-      views: {
-        'tab-data': {
-          templateUrl: "templates/tab-data.html",
-          controller: 'DataController'
+  $stateProvider
+    .state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: "LoginController"
+    })
+    .state('setup', {
+      url: '/setup_account',
+      templateUrl: 'templates/setup.html',
+      controller: "SetupController"
+    })
+    .state('tag', {
+      url: '/tag',
+      templateUrl: 'templates/tag.html',
+      controller: "TagController"
+    })
+    .state('tab', {
+      url: '/tab',
+      templateUrl: 'templates/tabs.html',
+      controller: "NavigationController",
+      abstract: true
+    })
+    .state('tab.data',{
+        url: "/data",
+        views: {
+          'tab-data': {
+            templateUrl: "templates/tab-data.html",
+            controller: 'DataController'
+          }
         }
-      }
-  })
-  $stateProvider.state('tab.dash',{
-      url: "/dash",
-      views: {
-        'tab-dash': {
-          templateUrl: "templates/tab-dash.html",
-          controller: 'ProfileController'
+    })
+    .state('tab.dash',{
+        url: "/dash",
+        views: {
+          'tab-dash': {
+            templateUrl: "templates/tab-dash.html",
+            controller: 'ProfileController'
+          }
         }
-      }
-  })
-  $stateProvider.state('tab.about',{
-      url: "/about",
-      views: {
-      'tab-about': {
-      templateUrl: "templates/tab-about.html",
-      controller: 'AboutController'
-    }
-  }}
-  ) 
-  $stateProvider.state('home', {
-    url: "/home",
-    cache: false,
-    templateUrl: 'templates/home.html',
-    controller: 'HomeController'
-  });
+    })
+    .state('tab.about',{
+        url: "/about",
+        views: {
+          'tab-about': {
+            templateUrl: "templates/tab-about.html",
+            controller: 'AboutController'
+          }
+        }
+    }) 
+    .state('home', {
+      url: "/home",
+      cache: false,
+      templateUrl: 'templates/home.html',
+      controller: 'HomeController'
+    });
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/home') 
