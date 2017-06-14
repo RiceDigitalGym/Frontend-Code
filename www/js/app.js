@@ -31,12 +31,12 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
     templateUrl: 'templates/login.html',
     controller: "LoginController"
   })
-  .state('setup', {
+  $stateProvider.state('setup', {
     url: '/setup_account',
     templateUrl: 'templates/setup.html',
     controller: "SetupController"
   })
-  .state('tag', {
+  $stateProvider.state('tag', {
     url: '/tag',
     templateUrl: 'templates/tag.html',
     controller: "TagController"
@@ -47,7 +47,7 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
     controller: "NavigationController",
     abstract: true
   })
-  .state('tab.data',{
+  $stateProvider.state('tab.data',{
       url: "/data",
       views: {
         'tab-data': {
@@ -56,7 +56,7 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
         }
       }
   })
-  .state('tab.dash',{
+  $stateProvider.state('tab.dash',{
       url: "/dash",
       views: {
         'tab-dash': {
@@ -65,7 +65,7 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
         }
       }
   })
-  .state('tab.about',{
+  $stateProvider.state('tab.about',{
       url: "/about",
       views: {
       'tab-about': {
@@ -73,7 +73,8 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
       controller: 'AboutController'
     }
   }}
-  ) .state('home', {
+  ) 
+  $stateProvider.state('home', {
     url: "/home",
     cache: false,
     templateUrl: 'templates/home.html',
