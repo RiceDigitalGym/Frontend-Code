@@ -17,7 +17,8 @@ function UserService($http, APP_CONFIG){
     	})
 	}
 	this.updateUser = function(name, id, gender){
-		return $http.post(APP_CONFIG.API_ENDPOINT + "/addemailgender", {name: name, userId: id, gender: gender}).then(function(response){
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/addemailgender", 
+			{name: name, userId: id, gender: gender}).then(function(response){
       		console.log(response.data)
       		return response.data
     	})
@@ -27,8 +28,9 @@ function UserService($http, APP_CONFIG){
           return response.data
        })
 	}
-	this.addTag = function(machineID, tagName) {
-		return $http.post(APP_CONFIG.API_ENDPOINT + "/add_tag", {machineID: machineID, tagName: tagName}).then(function(response) {
+	this.checkTag = function(machineID, tagName) {
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/check_tag", 
+			{tagName: tagName, machineID: machineID, userID: localStorage.userId}).then(function(response) {
 			return response.data
 		})
 	}
@@ -41,6 +43,6 @@ function UserService($http, APP_CONFIG){
 		return $http.post(APP_CONFIG.API_ENDPOINT + "/history", {userId: id}).then(function(response){
 			return response.data
 		})
-	}	
+	}
 }
 module.exports = UserService
