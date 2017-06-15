@@ -5,16 +5,13 @@
     </div>
 
       <div class="list list-inset">
+          <label class="item item-input">Give Your Tag a Name <br>
+              <input placeholder="Tag Name" ng-model="formData.tagName">
+          </label>
           <label class="item item-input">
               <input type="text" placeholder="Machine ID" ng-model="formData.machineID">
           </label>
-          <label class="item item-input">Give Your Tag a Name <br>
-            <input placeholder="Tag Name" ng-model="formData.tagName">
-          </label>
       </div>
-          <button class="button button-block button-calm" ng-click="addTag()">Add Tag</button>
+          <button class="button button-block button-calm" ng-click="checkTag()">Register Tag</button>
       </div>
-
-
-  </label>
 </ion-view>
