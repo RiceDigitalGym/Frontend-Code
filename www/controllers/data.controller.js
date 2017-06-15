@@ -49,6 +49,8 @@ function DataController($scope, $timeout, $state, DataService, UserService, Sess
     }
   };
 
+
+
 //Used for keeping track of current workout duration. Display purposes only. Real time is stored in server.
 $scope.current_duration = 0
 $scope.current_duration_formatted = "00:00:00"
