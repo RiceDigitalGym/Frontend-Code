@@ -11,6 +11,13 @@ function SessionService($http, APP_CONFIG){
 			return duration.data
  		 })
 	}
+	//////////
+	// this.getIdleTime = function(){
+	// 	return $http.get(APP_CONFIG.API_ENDPOINT + "/idle_time").then(function(idleTime){
+	// 		return idleTime.data
+	// 	})
+	// }
+	//////////
 	this.listen = function(){
 		return $http.get(APP_CONFIG.API_ENDPOINT + "/sessionlisten").then(function(list) {
 			return list.data
