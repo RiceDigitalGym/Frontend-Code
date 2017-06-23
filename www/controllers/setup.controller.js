@@ -9,7 +9,7 @@ function SetupController($scope, $state, UserService){
 
     UserService.setupAccount(localStorage.userId, $scope.formData.name, $scope.formData.email, $scope.formData.password).then(function(response){
       if(response.status == "success"){
-        $state.go('tag')
+        $state.go('tab.dash')
       }
     })
 
