@@ -4,10 +4,12 @@ function LoginController($scope, $state, UserService){
     if($scope.formData.email && $scope.formData.password) {
 
       UserService.login($scope.formData.email, $scope.formData.password).then(function(response) {
-        if (response.status == "success") {
-          localStorage.userId = response.user.id
-          localStorage.name = response.user.name
-          localStorage.email = response.user.email
+        if (response.token) {
+          console.log(response.token)
+          localStorage.token = response.token
+          localStorage.userId = response.token.userID
+          localStorage.name = response.token.username
+          localStorage.email = response.token.email
           $state.go('tab.data')
         }
         else {

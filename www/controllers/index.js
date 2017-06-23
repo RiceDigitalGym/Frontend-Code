@@ -17,5 +17,21 @@ angular.module(GLOBALS.APP_NAME)
 		.controller("AboutController", aboutController)
 		.controller("NavigationController", navigationController)
 		.controller("ProfileController", profileController)
-
-	
+		.factory('authInterceptor', function ($rootScope, $q, $window) {
+		  return {
+		    request: function (config) {
+		      config.headers = config.headers || {};
+		      if (localStorage.token) {
+		      	console.log("Authentication is called!");
+		        config.headers.Authorization = 'Bearer ' + localStorage.token;
+		      } 
+		      return config;
+		    },
+		    responseError: function (response) {
+		      if (response.status === 401 || response.status === 403) {
+		        console.log("User is not registered!");
+		      }
+		      return $q.reject(response);
+		    }
+		  };
+		})
