@@ -17,7 +17,7 @@ function UserService($http, APP_CONFIG){
     	})
 	}
 	this.updateUser = function(name, id, gender){
-		return $http.post(APP_CONFIG.API_ENDPOINT + "/addemailgender", 
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/addemailgender",
 			{name: name, userId: id, gender: gender}).then(function(response){
       		console.log(response.data)
       		return response.data
@@ -29,7 +29,7 @@ function UserService($http, APP_CONFIG){
        })
 	}
 	this.checkTag = function(machineID, tagName) {
-		return $http.post(APP_CONFIG.API_ENDPOINT + "/check_tag", 
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/check_tag",
 			{tagName: tagName, machineID: machineID, userID: localStorage.userId}).then(function(response) {
 			return response.data
 		})

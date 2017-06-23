@@ -11,6 +11,7 @@ function SessionService($http, APP_CONFIG){
 			return duration.data
  		 })
 	}
+	
 	this.listen = function(){
 		return $http.get(APP_CONFIG.API_ENDPOINT + "/sessionlisten").then(function(list) {
 			return list.data
