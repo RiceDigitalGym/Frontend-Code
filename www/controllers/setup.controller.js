@@ -7,6 +7,7 @@ function SetupController($scope, $state, UserService){
 
     localStorage.name = $scope.formData.name
     localStorage.email = $scope.formData.email
+    localStorage.userID = 
 
     UserService.setupAccount(localStorage.userId, $scope.formData.name, $scope.formData.email, $scope.formData.password).then(function(response){
       if(response.status == "success"){
