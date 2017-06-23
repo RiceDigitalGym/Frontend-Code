@@ -1,12 +1,13 @@
 HomeController.$inject = ["$scope", "$timeout", "$state", "SessionService", "$http"]
 
 function HomeController($scope, $timeout, $state, SessionService, $http){
-  $scope.goToLogin = function(){
-    $state.go('login')
-  }
   $scope.goToSetup = function(){
     $state.go('setup')
   }
+  $scope.goToLogin = function(){
+    $state.go('login')
+  }
+
   //Check to see if an RFID has been scanned every 500ms
   //$http is needed because this function is pre-evaluated
     //   (function tick() {
