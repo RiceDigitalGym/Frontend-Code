@@ -4,14 +4,13 @@ SetupController.$inject = ["$scope", "$state", "UserService"]
 
 function SetupController($scope, $state, UserService){
   $scope.setupAccount = function(){
-
     localStorage.name = $scope.formData.name
     localStorage.email = $scope.formData.email
     localStorage.userID = 
 
     UserService.setupAccount(localStorage.userId, $scope.formData.name, $scope.formData.email, $scope.formData.password).then(function(response){
       if(response.status == "success"){
-        $state.go('tab.data')
+        $state.go('tab.dash')
       }
     })
 

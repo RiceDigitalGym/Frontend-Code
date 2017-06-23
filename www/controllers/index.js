@@ -22,17 +22,16 @@ angular.module(GLOBALS.APP_NAME)
 		    request: function (config) {
 		      config.headers = config.headers || {};
 		      if (localStorage.token) {
-		        config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
-		      }
+		      	console.log("Authentication is called!");
+		        config.headers.Authorization = 'Bearer ' + localStorage.token;
+		      } 
 		      return config;
 		    },
-		    response: function (response) {
-		      if (response.status === 401) {
-		        // handle the case where the user is not authenticated
+		    responseError: function (response) {
+		      if (response.status === 401 || response.status === 403) {
+		        console.log("User is not registered!");
 		      }
-		      return response || $q.when(response);
+		      return $q.reject(response);
 		    }
 		  };
-		}).config(function ($httpProvider) {
-		  $httpProvider.interceptors.push('authInterceptor');
-		});
+		})
