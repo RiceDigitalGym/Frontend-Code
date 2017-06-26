@@ -7,6 +7,7 @@ function HomeController($scope, $timeout, $state, SessionService, $http){
   $scope.goToLogin = function(){
     $state.go('login')
   }
+  //random comment
 
   //Check to see if an RFID has been scanned every 500ms
   //$http is needed because this function is pre-evaluated
