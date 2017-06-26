@@ -24,7 +24,7 @@ angular.module(GLOBALS.APP_NAME)
 		      if (localStorage.token) {
 		      	console.log("Authentication is called!");
 		        config.headers.Authorization = 'Bearer ' + localStorage.token;
-		      } 
+		      }
 		      return config;
 		    },
 		    responseError: function (response) {
