@@ -4,7 +4,7 @@ function NavigationController($scope, UserService, $state) {
     //This function sends a logout request to the server for a specific userId.
     UserService.logout(localStorage.userId).then(function(response){
     	console.log(localStorage);
-    	localStorage.token.clear();
+    	localStorage.clear();
     	console.log(localStorage);
       	$state.go("login")
     })
