@@ -1,7 +1,7 @@
 DataController.$inject = ['$scope', '$timeout', '$state', 'DataService', 'UserService', 'SessionService'];
 
 function DataController($scope, $timeout, $state, DataService, UserService, SessionService) {
-  
+
 
   String.prototype.toHHMMSS = function () {
   console.log(this)
@@ -79,9 +79,9 @@ function DataController($scope, $timeout, $state, DataService, UserService, Sess
 
     $scope.$on('$ionicView.loaded', function () {
         //Requests the last data point in the database
-        //Todo: Make this bike specific
+        //currently working on: making this bike specific
          (function tick() {
-          DataService.getLastData().then(function(last){
+          DataService.getLastData(localStorage.userID).then(function(last){
              //Set rpm, display rpm in radial view, and add datapoint to chart.
                 var rpm = last.rpm
                 $scope.data[0].push(rpm)

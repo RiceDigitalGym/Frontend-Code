@@ -9,7 +9,7 @@ function ProfileController($scope, UserService) {
 
     //getting past workout data for user
     $scope.history = []
-    UserService.history(localStorage.userId).then(function(history){
+    UserService.history(localStorage.userID).then(function(history){
     	console.log(history)
     	console.log("response")
     	$scope.history = history

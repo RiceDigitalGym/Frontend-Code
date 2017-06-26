@@ -5,7 +5,7 @@ function LoginController($scope, $state, UserService){
 
       UserService.login($scope.formData.email, $scope.formData.password).then(function(response) {
         if (response.status == "success") {
-          localStorage.userId = response.user.id
+          localStorage.userID = response.user.id
           localStorage.name = response.user.name
           localStorage.email = response.user.email
           $state.go('tab.data')
@@ -14,9 +14,9 @@ function LoginController($scope, $state, UserService){
           window.alert("Incorrect email or password entered.")
         }
       })
-      
+
     }
-  } 
+  }
 }
 
 module.exports = LoginController;
