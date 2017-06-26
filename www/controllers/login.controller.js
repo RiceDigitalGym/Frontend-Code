@@ -7,7 +7,7 @@ function LoginController($scope, $state, UserService){
         if (response.token) {
           console.log(response.token)
           localStorage.token = response.token
-          localStorage.userId = response.token.userID
+          localStorage.userID = response.token.userID
           localStorage.name = response.token.username
           localStorage.email = response.token.email
           $state.go('tab.data')
@@ -16,9 +16,9 @@ function LoginController($scope, $state, UserService){
           window.alert("Incorrect email or password entered.")
         }
       })
-      
+
     }
-  } 
+  }
 }
 
 module.exports = LoginController;
