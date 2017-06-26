@@ -18,7 +18,7 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider, ChartJsProvider, $sceDelegateProvider, $ionicConfigProvider) {
+.config(function($stateProvider, $urlRouterProvider, ChartJsProvider, $sceDelegateProvider, $ionicConfigProvider, $httpProvider) {
   $ionicConfigProvider.views.maxCache(0);
 $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.rice.edu/']);
 
@@ -26,6 +26,7 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
+  $httpProvider.interceptors.push('authInterceptor');
   $stateProvider
     .state('login', {
       url: '/login',
