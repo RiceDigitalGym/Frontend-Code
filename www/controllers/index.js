@@ -21,10 +21,11 @@ angular.module(GLOBALS.APP_NAME)
 		  return {
 		    request: function (config) {
 		      config.headers = config.headers || {};
+		      console.log(config.headers);
 		      if (localStorage.token) {
 		      	console.log("Authentication is called!");
 		        config.headers.Authorization = 'Bearer ' + localStorage.token;
-		      } 
+		      }
 		      return config;
 		    },
 		    responseError: function (response) {

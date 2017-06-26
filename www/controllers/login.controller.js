@@ -13,7 +13,7 @@ function LoginController($scope, $state, UserService){
         if (response.token) {
           console.log(response.token)
           localStorage.token = response.token
-          localStorage.userId = response.token.userID
+          localStorage.userID = response.token.userID
           localStorage.name = response.token.username
           localStorage.email = response.token.email
 >>>>>>> 78a8f4456370634874eaf7e15d9b40acbdaa3dce
