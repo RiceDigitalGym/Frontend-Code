@@ -4,7 +4,7 @@ function DataController($scope, $timeout, $state, DataService, UserService, Sess
   
 
   String.prototype.toHHMMSS = function () {
-  console.log(this)
+  //console.log(this)
   // this should be in milliseconds, second parameter is the base (i.e., decimal)
     var sec_num = parseInt(this, 10) / 1000
     var hours   = Math.floor(sec_num / 3600)

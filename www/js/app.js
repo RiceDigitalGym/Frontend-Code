@@ -26,7 +26,16 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
-  $httpProvider.interceptors.push('authInterceptor');
+  $httpProvider.interceptors.push(function($q) {
+    return {
+     'request': function(config) {
+          console.log("Current token: " + localStorage.token);
+          config.headers['authorization'] = localStorage.token;
+          console.log(config.headers['authorization']);
+          return config;
+      }
+    };
+  });
   $stateProvider
     .state('login', {
       url: '/login',
