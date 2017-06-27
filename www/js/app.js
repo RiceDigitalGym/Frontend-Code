@@ -30,6 +30,7 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
     return {
      'request': function(config) {
           console.log("Current token: " + localStorage.token);
+          // config.headers = {};
           config.headers['authorization'] = localStorage.token;
           console.log(config.headers['authorization']);
           return config;
