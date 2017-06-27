@@ -5,7 +5,7 @@ function LoginController($scope, $state, UserService){
 
       UserService.login($scope.formData.email, $scope.formData.password).then(function(response) {
         if (response.token) {
-          console.log(response.token)
+          // console.log(response.token)
           localStorage.token = response.token
           localStorage.userID = response.token.userID
           localStorage.name = response.token.username

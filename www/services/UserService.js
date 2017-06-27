@@ -9,7 +9,7 @@ function UserService($http, APP_CONFIG, $state){
 		})
 	}
 	this.login = function(email, password) {
-		return $http.post(APP_CONFIG.API_ENDPOINT + "/login", {email: email, password: password}, {headers: {'authorization': localStorage.token}}).then(function(response) {
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/login", {email: email, password: password}).then(function(response) {
 			if (response.status === 401 || response.status === 403 || response.status === 400)
       			$state.go('home');
 			return response.data

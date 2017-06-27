@@ -29,8 +29,8 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
   $httpProvider.interceptors.push(function($q) {
     return {
      'request': function(config) {
+          console.log("Config: " + JSON.stringify(config));
           console.log("Current token: " + localStorage.token);
-          // config.headers = {};
           config.headers['authorization'] = localStorage.token;
           console.log(config.headers['authorization']);
           return config;
