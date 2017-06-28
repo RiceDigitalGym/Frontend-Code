@@ -48,6 +48,11 @@ $sceDelegateProvider.resourceUrlWhitelist(['self','http://ricedigitalgym.blogs.r
       templateUrl: 'templates/setup.html',
       controller: "SetupController"
     })
+    .state('changepassword', {
+      url: '/changepassword',
+      templateUrl: 'templates/changepassword.html',
+      controller: "ChangePasswordController"
+    })
     .state('tag', {
       url: '/tag',
       templateUrl: 'templates/tag.html',

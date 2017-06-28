@@ -15,6 +15,11 @@ function UserService($http, APP_CONFIG, $state){
 			return response.data
 		})
 	}
+    this.changepassword = function(id,oldpass,newpass){
+        return $http.post(APP_CONFIG.API_ENDPOINT + "/changepassword",{userId: id, oldpw: oldpass, newpw: newpass}).then(function(response){
+      		return response.data
+    	})
+    }
 	this.logout = function(id){
 		return $http.post(APP_CONFIG.API_ENDPOINT + "/logout", {userID: id}).then(function(response){
       		if (response.status === 401 || response.status === 403 || response.status === 400)

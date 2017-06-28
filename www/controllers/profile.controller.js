@@ -1,6 +1,10 @@
-ProfileController.$inject = ["$scope", "UserService"]
-function ProfileController($scope, UserService) {
-
+ProfileController.$inject = ["$scope", "UserService","$state"]
+function ProfileController($scope, UserService, $state) {
+   
+    $scope.changePassword = function(){ 
+        $state.go('changepassword') 
+    }
+    
   	//Set display name
     $scope.name = localStorage.name
     if(!$scope.name){

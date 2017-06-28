@@ -1,5 +1,5 @@
-LoginController.$inject = ['$scope', '$state', 'UserService']
-function LoginController($scope, $state, UserService){
+LoginController.$inject = ['$scope', '$state', 'UserService','$ionicPopup']
+function LoginController($scope, $state, UserService,$ionicPopup){
   $scope.submitLogin  = function(){
     if($scope.formData.email && $scope.formData.password) {
 
@@ -13,7 +13,9 @@ function LoginController($scope, $state, UserService){
           $state.go('tab.data')
         }
         else {
-          window.alert("Incorrect email or password entered.")
+            var alertPopup = $ionicPopup.alert({
+            title: 'Incorrect email or password entered.',
+        });
         }
       })
 
