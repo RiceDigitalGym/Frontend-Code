@@ -35,6 +35,11 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
                     config.headers['authorization'] = localStorage.token;
                     console.log(config.headers['authorization']);
                     return config;
+                }, 
+                'response': function(response) {
+                    console.log("Interceptor response: " + JSON.stringify(response));
+                    console.log("Interceptor response status: " + response.status);
+                    return response;
                 }
             };
         });

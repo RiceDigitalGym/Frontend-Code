@@ -38,7 +38,9 @@ function ProfileController ($scope, UserService, $state) {
 
     $scope.lastworkout = "";
     UserService.getLastWorkout().then(function(response) {
-        // console.log(response)
+        // console.log("Last workout response status: " + response.status);
+        // if (response.status === 401 || response.status == 403 || response.status === 400)
+        //     $state.go('home');
         $scope.lastworkout = response.date;
     })
 
