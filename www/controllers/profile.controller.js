@@ -1,22 +1,23 @@
 ProfileController.$inject = ["$scope", "UserService","$state"]
-function ProfileController($scope, UserService, $state) {
+
+function ProfileController ($scope, UserService, $state) {
    
-    $scope.changePassword = function(){ 
-        $state.go('changepassword') 
+    $scope.changePassword = function() { 
+        $state.go('changepassword');
     }
     
   	//Set display name
-    $scope.name = localStorage.name
-    if(!$scope.name){
-      $scope.name = "undefined"
+    $scope.name = localStorage.name;
+    if (!$scope.name) {
+        $scope.name = "undefined";
     }
 
     //getting past workout data for user
     $scope.history = []
-    UserService.history(localStorage.userID).then(function(history){
-    	console.log(history)
-    	console.log("response")
-    	$scope.history = history
+    UserService.history(localStorage.userID).then(function(history) {
+    	// console.log(history);
+    	// console.log("response");
+    	$scope.history = history;
     })
 
     // function getLastWorkout() {
@@ -34,10 +35,11 @@ function ProfileController($scope, UserService, $state) {
     //         return "No recent workouts found."
     //     }
     // }
-    $scope.lastworkout = ""
-    UserService.getLastWorkout().then(function(response){
-        console.log(response)
-        $scope.lastworkout = response.date
+
+    $scope.lastworkout = "";
+    UserService.getLastWorkout().then(function(response) {
+        // console.log(response)
+        $scope.lastworkout = response.date;
     })
 
 }

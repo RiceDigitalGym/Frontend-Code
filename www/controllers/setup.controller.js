@@ -1,23 +1,20 @@
-// Add more appropriate data inputs in the future!
-
 SetupController.$inject = ["$scope", "$state", "UserService"]
 
-function SetupController($scope, $state, UserService){
-  $scope.setupAccount = function(){
-    localStorage.name = $scope.formData.name
-    localStorage.email = $scope.formData.email
+function SetupController($scope, $state, UserService) {
+  
+    $scope.setupAccount = function() {
+        // Add more appropriate data inputs in the future!
+        localStorage.name = $scope.formData.name;
+        localStorage.email = $scope.formData.email;
 
-    UserService.setupAccount(localStorage.userID, $scope.formData.name, $scope.formData.email, $scope.formData.password).then(function(response){
-      if(response.status == "success"){
-        $state.go('tab.dash')
-      }
-    })
-
-  }
+        UserService.setupAccount(localStorage.userID, $scope.formData.name, $scope.formData.email, $scope.formData.password).then(function(response) {
+            if (response.status == "success") {
+                $state.go('tab.dash');
+            }
+        })
+    }
 
 }
-
-
 
 module.exports = SetupController;
 
