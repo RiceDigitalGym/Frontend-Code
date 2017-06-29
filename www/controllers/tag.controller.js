@@ -1,6 +1,6 @@
-TagController.$inject = ['$scope', '$state', 'UserService']
+TagController.$inject = ['$scope', '$state', 'UserService', '$ionicPopup', '$timeout']
 
-function TagController($scope, $state, UserService) {
+function TagController($scope, $state, UserService, $ionicPopup, $timeout) {
 
     $scope.checkTag = function() {
 
@@ -10,13 +10,14 @@ function TagController($scope, $state, UserService) {
                 if (response.status == "success") {
                     var alertPopup = $ionicPopup.alert({
                             title: 'Tag has been registered.'
-                        });
+                    });
                     $state.go('tab.dash');
+                    break;
                 } 
                 else {
                     var alertPopup = $ionicPopup.alert({
                             title: 'Tag has not been registered. Please attempt again.'
-                        });
+                    });
                 } 
             })
 
