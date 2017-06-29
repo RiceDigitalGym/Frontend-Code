@@ -115,7 +115,7 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
             });
 
         // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/login') 
+        $urlRouterProvider.otherwise('/home');
 
     });
 
