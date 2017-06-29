@@ -5,12 +5,11 @@ function TagController($scope, $state, UserService) {
     $scope.checkTag = function() {
         
         UserService.checkTag($scope.formData.machineID, $scope.formData.tagName, localStorage.userID).then(function(response) {
+            console.log("checkTag has been called - status is: " + response.status);
             if (response.status == "success") {
-                return "Tag has been registered!";
-                $state.go('tab.dash');
+                // $state.go('tab.dash');
             } 
             else {
-                return "Tag was not registered!";
                 $state.go('tab.data');
             } 
         })
