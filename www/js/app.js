@@ -27,7 +27,7 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
         // Set up the various states which the app can be in.
         // Each state's controller can be found in controllers.js
 
-        $httpProvider.interceptors.push(function($q) {
+        $httpProvider.interceptors.push(function($q, $injector) {
             return {
                 'request': function(config) {
                     console.log("Config: " + JSON.stringify(config));
@@ -44,6 +44,7 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
                 'responseError': function(response) {
                     console.log("Interceptor responseError: " + JSON.stringify(response));
                     console.log("Interceptor responseError status: " + response.status);
+                    var $state = $injector.get('$state');
                     if (response.status == 401 || response.status == 403 || response.status == 400) {
                         $state.go('home');
                         return response;
