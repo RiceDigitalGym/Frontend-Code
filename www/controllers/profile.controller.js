@@ -5,6 +5,10 @@ function ProfileController ($scope, UserService, $state) {
     $scope.changePassword = function() { 
         $state.go('changepassword');
     }
+
+    $scope.registerTag = function() {
+        $state.go('tag');
+    }
     
   	//Set display name
     $scope.name = localStorage.name;
@@ -15,8 +19,6 @@ function ProfileController ($scope, UserService, $state) {
     //getting past workout data for user
     $scope.history = []
     UserService.history(localStorage.userID).then(function(history) {
-    	// console.log(history);
-    	// console.log("response");
     	$scope.history = history;
     })
 
@@ -38,9 +40,6 @@ function ProfileController ($scope, UserService, $state) {
 
     $scope.lastworkout = "";
     UserService.getLastWorkout().then(function(response) {
-        // console.log("Last workout response status: " + response.status);
-        // if (response.status === 401 || response.status == 403 || response.status === 400)
-        //     $state.go('home');
         $scope.lastworkout = response.date;
     })
 

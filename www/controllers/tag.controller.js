@@ -2,25 +2,16 @@ TagController.$inject = ['$scope', '$state', 'UserService']
 
 function TagController($scope, $state, UserService) {
 
-    // $scope.checkTag = function() {
-    //     UserService.checkTag($scope.formData.machineID, $scope.formData.tagName).then(function(response) {
-    //         if (response.status == "success") {
-    //             return "Tag has been registered!";
-    //         } 
-    //         else {
-    //             return "Tag is already registered!";
-    //         }
-    //     })
-    // }
-
     $scope.checkTag = function() {
         
         UserService.checkTag($scope.formData.machineID, $scope.formData.tagName).then(function(response) {
             if (response.status == "success") {
                 return "Tag has been registered!";
+                $state.go('tab.dash');
             } 
             else {
                 return "Tag was not registered!";
+                $state.go('tab.data');
             } 
         })
         
@@ -37,8 +28,6 @@ function TagController($scope, $state, UserService) {
        //  		}
        //  	})
       	// }
-
-      	$state.go('tab.data');
 
     }
 

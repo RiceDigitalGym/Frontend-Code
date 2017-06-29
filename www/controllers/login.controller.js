@@ -6,11 +6,10 @@ function LoginController ($scope, $state, UserService,$ionicPopup) {
         if ($scope.formData.email && $scope.formData.password) {
             UserService.login($scope.formData.email, $scope.formData.password).then(function(response) {
                 if (response.token) {
-                    // console.log(response.token)
                     localStorage.token = response.token;
-                    localStorage.userID = response.token.userID;
-                    localStorage.name = response.token.username;
-                    localStorage.email = response.token.email;
+                    localStorage.name = response.userName;
+                    localStorage.userID = response.userID;
+                    localStorage.email = response.email;
                     $state.go('tab.data');
                 }
                 else {
