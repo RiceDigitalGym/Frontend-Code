@@ -40,6 +40,14 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
                     console.log("Interceptor response: " + JSON.stringify(response));
                     console.log("Interceptor response status: " + response.status);
                     return response;
+                },
+                'responseError': function(response) {
+                    console.log("Interceptor responseError: " + JSON.stringify(response));
+                    console.log("Interceptor responseError status: " + response.status);
+                    if (response.status == 401 || response.status == 403 || response.status == 400) {
+                        $state.go('home');
+                        return response;
+                    }
                 }
             };
         });

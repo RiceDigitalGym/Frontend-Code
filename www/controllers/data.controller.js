@@ -76,27 +76,27 @@ function DataController($scope, $timeout, $state, DataService, UserService, Sess
         }
     })
 
-    $scope.$on('$ionicView.loaded', function() {
-        //Requests the last data point in the database
-        //Todo: Make this bike specific
-        (function tick() {
-            DataService.getLastData().then(function(last) {
-                //Set rpm, display rpm in radial view, and add datapoint to chart.
-                var rpm = last.rpm
-                $scope.data[0].push(rpm)
-                $scope.rpm_data = [0, rpm-200, rpm]
-                $scope.lastRPM = parseInt(rpm)
-                $scope.deg = rpm*360.0/200.0
-                $scope.labels.push("")
-                if ($scope.data[0].length>50) {
-                    $scope.data[0].shift()
-                    $scope.labels.shift()
-                }
+    // $scope.$on('$ionicView.loaded', function() {
+    //     //Requests the last data point in the database
+    //     //Todo: Make this bike specific
+    //     (function tick() {
+    //         DataService.getLastData().then(function(last) {
+    //             //Set rpm, display rpm in radial view, and add datapoint to chart.
+    //             var rpm = last.rpm
+    //             $scope.data[0].push(rpm)
+    //             $scope.rpm_data = [0, rpm-200, rpm]
+    //             $scope.lastRPM = parseInt(rpm)
+    //             $scope.deg = rpm*360.0/200.0
+    //             $scope.labels.push("")
+    //             if ($scope.data[0].length>50) {
+    //                 $scope.data[0].shift()
+    //                 $scope.labels.shift()
+    //             }
 
-                $timeout(tick, 500)
-            })
-        })();
-    });
+    //             $timeout(tick, 500)
+    //         })
+    //     })();
+    // });
 
 }
 

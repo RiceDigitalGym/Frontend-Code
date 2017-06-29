@@ -6,24 +6,27 @@ function UserService($http, APP_CONFIG, $state){
 
 	this.setupAccount = function(id, name, email, password) {
 		return $http.post(APP_CONFIG.API_ENDPOINT + "/setup_account", {userID: id, name: name, email: email, password: password}).then(function(response) {
-			if (response.status === 401 || response.status == 403 || response.status === 400)
-      			$state.go('home');
+			// if (response.status === 401 || response.status == 403 || response.status === 400)
+   //    			$state.go('home');
 			return response.data;
 		})
 	}
 
 	this.login = function(email, password) {
 		return $http.post(APP_CONFIG.API_ENDPOINT + "/login", {email: email, password: password}).then(function(response) {
-			if (response.status === 401 || response.status == 403 || response.status === 400)
-      			$state.go('home');
+			console.log("Response Data: " + response.data);
+			console.log("Response Data Status: " + response.data.status);
+			console.log("Response Status: " + response.status);
+			// if (response.status === 401 || response.status == 403 || response.status === 400)
+   //    			$state.go('home');
 			return response.data;
 		})
 	}
 
     this.changepassword = function(id,oldpass,newpass) {
         return $http.post(APP_CONFIG.API_ENDPOINT + "/changepassword", {userId: id, oldpw: oldpass, newpw: newpass}).then(function(response) {
-      		if (response.status === 401 || response.status == 403 || response.status === 400)
-      			$state.go('home');
+      		// if (response.status === 401 || response.status == 403 || response.status === 400)
+      		// 	$state.go('home');
       		return response.data
     	})
     }
@@ -33,32 +36,35 @@ function UserService($http, APP_CONFIG, $state){
       		console.log("Response Data: " + response.data);
 			console.log("Response Data Status: " + response.data.status);
 			console.log("Response Status: " + response.status);
-      		if (response.status === 401 || response.status == 403 || response.status === 400)
-      			$state.go('home');
+      		// if (response.status === 401 || response.status == 403 || response.status === 400)
+      		// 	$state.go('home');
       		return response.data;
     	})
 	}
 
 	this.updateUser = function(name, id, gender) {
 		return $http.post(APP_CONFIG.API_ENDPOINT + "/addemailgender", {name: name, userID: id, gender: gender}).then(function(response) {
-      		if (response.status === 401 || response.status == 403 || response.status === 400)
-      			$state.go('home');
+      		console.log("Response Data: " + response.data);
+			console.log("Response Data Status: " + response.data.status);
+			console.log("Response Status: " + response.status);
+      		// if (response.status === 401 || response.status == 403 || response.status === 400)
+      		// 	$state.go('home');
       		return response.data
     	})
 	}
 
 	this.addName = function(name, id) {
 		return $http.post(APP_CONFIG.API_ENDPOINT + "/addname", {name: name, userID: id}).then(function(response) {
-			if (response.status === 401 || response.status == 403 || response.status === 400)
-      			$state.go('home');
+			// if (response.status === 401 || response.status == 403 || response.status === 400)
+   //    			$state.go('home');
          	return response.data
         })
 	}
 
 	this.checkTag = function(machineID, tagName) {
 		return $http.post(APP_CONFIG.API_ENDPOINT + "/check_tag", {tagName: tagName, machineID: machineID, userID: id}).then(function(response) {
-			if (response.status === 401 || response.status == 403 || response.status === 400)
-      			$state.go('home');
+			// if (response.status === 401 || response.status == 403 || response.status === 400)
+   //    			$state.go('home');
 			return response.data
 		})
 	}
@@ -71,17 +77,22 @@ function UserService($http, APP_CONFIG, $state){
 				}
 			})
 			.then(function(response) {
-				console.log(response)
-				if (response.status === 401 || response.status == 403 || response.status === 400)
-	      			$state.go('home');
+				console.log("Response Data: " + response.data);
+				console.log("Response Data Status: " + response.data.status);
+				console.log("Response Status: " + response.status);
+				// if (response.status === 401 || response.status == 403 || response.status === 400)
+	   //    			$state.go('home');
 				return response.data
 			})
 	}
 
 	this.history = function(id) {
 		return $http.post(APP_CONFIG.API_ENDPOINT + "/history", {userID: id}).then(function(response) {
-			if (response.status === 401 || response.status == 403 || response.status === 400)
-      			$state.go('home');
+			console.log("Response Data: " + response.data);
+			console.log("Response Data Status: " + response.data.status);
+			console.log("Response Status: " + response.status);
+			// if (response.status === 401 || response.status == 403 || response.status === 400)
+   //    			$state.go('home');
 			return response.data
 		})
 	}
