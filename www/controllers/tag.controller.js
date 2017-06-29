@@ -3,30 +3,26 @@ TagController.$inject = ['$scope', '$state', 'UserService']
 function TagController($scope, $state, UserService) {
 
     $scope.checkTag = function() {
-        
-        UserService.checkTag($scope.formData.machineID, $scope.formData.tagName, localStorage.userID).then(function(response) {
-            console.log("checkTag has been called - status is: " + response.status);
-            if (response.status == "success") {
-                // $state.go('tab.dash');
-            } 
-            else {
-                $state.go('tab.data');
-            } 
-        })
-        
-       //  var iterations = 0
-      	// while (iterations < 6) {
-      	// 	UserService.checkTag($scope.formData.machineID, $scope.formData.tagName).then(function(response) {
-       //  		if (response.status == "success") {
-       //  			return "Tag has been registered!";
-       //  		}
-       //  		else {
-       //  			setTimeout(function() {
-       //  				iterations++
-       //  			}, 5000)    			
-       //  		}
-       //  	})
-      	// }
+
+        for (var i = 0; i < 5; i++) {
+
+            UserService.checkTag($scope.formData.tagName, $scope.formData.machineID, localStorage.userID).then(function(response) {
+                if (response.status == "success") {
+                    var alertPopup = $ionicPopup.alert({
+                            title: 'Tag has been registered.'
+                        });
+                    $state.go('tab.dash');
+                } 
+                else {
+                    var alertPopup = $ionicPopup.alert({
+                            title: 'Tag has not been registered. Please attempt again.'
+                        });
+                } 
+            })
+
+            $timeout(2000);
+
+        }
 
     }
 
