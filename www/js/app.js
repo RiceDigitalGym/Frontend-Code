@@ -30,15 +30,15 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
         $httpProvider.interceptors.push(function($q, $injector) {
             return {
                 'request': function(config) {
-                    console.log("Config: " + JSON.stringify(config));
-                    console.log("Current token: " + localStorage.token);
+                    // console.log("Config: " + JSON.stringify(config));
+                    // console.log("Current token: " + localStorage.token);
                     config.headers['authorization'] = localStorage.token;
-                    console.log(config.headers['authorization']);
+                    // console.log(config.headers['authorization']);
                     return config;
                 }, 
                 'response': function(response) {
-                    console.log("Interceptor response: " + JSON.stringify(response));
-                    console.log("Interceptor response status: " + response.status);
+                    // console.log("Interceptor response: " + JSON.stringify(response));
+                    // console.log("Interceptor response status: " + response.status);
                     return response;
                 },
                 'responseError': function(response) {

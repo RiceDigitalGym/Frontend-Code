@@ -4,7 +4,7 @@ function TagController($scope, $state, UserService) {
 
     $scope.checkTag = function() {
         
-        UserService.checkTag($scope.formData.machineID, $scope.formData.tagName).then(function(response) {
+        UserService.checkTag($scope.formData.machineID, $scope.formData.tagName, localStorage.userID).then(function(response) {
             if (response.status == "success") {
                 return "Tag has been registered!";
                 $state.go('tab.dash');
