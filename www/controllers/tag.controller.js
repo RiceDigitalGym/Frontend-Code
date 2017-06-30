@@ -2,10 +2,12 @@ TagController.$inject = ['$scope', '$state', 'UserService', '$ionicPopup', '$int
 
 function TagController($scope, $state, UserService, $ionicPopup, $interval) {
 
+    $scope.showLoading = false;
     $scope.registered = false;
     $scope.count = 0;
 
     $scope.checkTag = function() {
+        $scope.showLoading = true;
         $interval(function() {
             $scope.count++;
             if (!$scope.registered) {
@@ -24,7 +26,7 @@ function TagController($scope, $state, UserService, $ionicPopup, $interval) {
                 })
             }
         }, 2000, 5);
-
+        $scope.showLoading = false;
     }
 }
 
