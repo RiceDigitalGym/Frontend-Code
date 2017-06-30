@@ -1,5 +1,7 @@
+import 'angular-spinner';
+
 console.log("File 'app.js' is being used.")
-angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress'])
+angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angularSpinner'])
     
     .run(function($ionicPlatform) {
         console.log("File 'app.js' is being used. (2)")
