@@ -24,6 +24,7 @@ function TagController($scope, $state, UserService, $ionicPopup, $interval) {
                 })
             }
         }, 2000, 5);
+
     }
 }
 
