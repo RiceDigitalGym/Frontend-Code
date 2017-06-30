@@ -3,9 +3,11 @@ TagController.$inject = ['$scope', '$state', 'UserService', '$ionicPopup', '$int
 function TagController($scope, $state, UserService, $ionicPopup, $interval) {
 
     $scope.registered = false;
+    $scope.count = 0;
 
     $scope.checkTag = function() {
         $interval(function() {
+            $scope.count++;
             if (!$scope.registered) {
                 UserService.checkTag($scope.formData.tagName, $scope.formData.machineID, localStorage.userID).then(function(response) {
                     if (response.status == "success") {
@@ -14,11 +16,11 @@ function TagController($scope, $state, UserService, $ionicPopup, $interval) {
                         });
                         $scope.registered = true;
                         $state.go('tab.dash');
-                    } else {
+                    } else if ($scope.count == 5) {
                         var alertPopup = $ionicPopup.alert({
                             title: 'Tag has not been registered. Please attempt again.'
                         });
-                    } 
+                    }
                 })
             }
         }, 2000, 5);
