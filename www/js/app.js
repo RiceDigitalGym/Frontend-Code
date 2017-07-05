@@ -1,4 +1,4 @@
-import 'angular-spinner';
+//import 'angular-spinner';
 
 console.log("File 'app.js' is being used.")
 angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angularSpinner'])
@@ -70,6 +70,11 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angul
                 url: '/changepassword',
                 templateUrl: 'templates/changepassword.html',
                 controller: "ChangePasswordController"
+            })
+            .state('forgotpassword', {
+                url: '/forgotpassword',
+                templateUrl: 'templates/forgotpassword.html',
+                controller: "ResetPasswordController"
             })
             .state('tag', {
                 url: '/tag',

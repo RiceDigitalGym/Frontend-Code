@@ -8,6 +8,7 @@ var aboutController = require('./profile.controller.js')
 var navigationController = require('./navigation.controller.js')
 var profileController = require('./profile.controller.js')
 var ChangePasswordController = require('./ChangePassword.controller.js')
+var ResetPasswordController = require('./resetpassword.controller.js')
 
 angular.module(GLOBALS.APP_NAME)
 	.controller("LoginController", loginController)
@@ -19,6 +20,7 @@ angular.module(GLOBALS.APP_NAME)
 	.controller("NavigationController", navigationController)
 	.controller("ProfileController", profileController)
     .controller("ChangePasswordController",ChangePasswordController)
+    .controller("ResetPasswordController",ResetPasswordController)
 	// .factory('authInterceptor', function ($rootScope, $q, $window) {
 	//   return {
 	//     request: function (config) {

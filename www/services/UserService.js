@@ -17,6 +17,24 @@ function UserService($http, APP_CONFIG, $state){
 		})
 	}
 
+    this.forgotpasswordchange = function(email,password){
+        return $http.post(APP_CONFIG.API_ENDPOINT + "/forgotpasswordchange", {email: email,password:password}).then(function(response) {
+      		return response.data
+    	}) 
+    }
+    
+    this.resetpasswordemail = function(email){
+       return $http.post(APP_CONFIG.API_ENDPOINT + "/sendresetpassword", {email: email,}).then(function(response) {
+      		return response.data
+    	})
+    } 
+    
+    this.verifysecretcode = function(email,code){
+       return $http.post(APP_CONFIG.API_ENDPOINT + "/sendresetpassword", {email: email, secretcode: code}).then(function(response) {
+      		return response.data
+    	})
+    } 
+    
     this.changepassword = function(id,oldpass,newpass) {
         return $http.post(APP_CONFIG.API_ENDPOINT + "/changepassword", {userId: id, oldpw: oldpass, newpw: newpass}).then(function(response) {
       		return response.data

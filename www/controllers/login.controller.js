@@ -2,6 +2,10 @@ LoginController.$inject = ['$scope', '$state', 'UserService','$ionicPopup']
 
 function LoginController ($scope, $state, UserService,$ionicPopup) {
     
+    $scope.forgotPassword  = function() {
+        $state.go('forgotpassword');
+    }
+    
     $scope.submitLogin  = function() {
         if ($scope.formData.email && $scope.formData.password) {
             UserService.login($scope.formData.email, $scope.formData.password).then(function(response) {
