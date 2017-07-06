@@ -63,6 +63,7 @@ function UserService($http, APP_CONFIG, $state){
 	}
 
 	this.checkTag = function(tagName, machineID, id) {
+		console.log("UserID in login Service: " + id);
 		return $http.post(APP_CONFIG.API_ENDPOINT + "/check_tag", {tagName: tagName, machineID: machineID, userID: id}).then(function(response) {
 			return response.data
 		})
