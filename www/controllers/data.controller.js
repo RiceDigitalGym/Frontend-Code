@@ -62,13 +62,13 @@ function DataController($scope, $timeout, $state, DataService, UserService, Sess
             $scope.current_duration = $scope.current_duration + 1000;
             console.log("real time duration",$scope.current_duration);
             $scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
-            // SessionService.checkActiveSession(localStorage.userID).then(function(active){
-            //   if (active.active == false) {
-            //     return $scope.current_duration_formatted
-            //   }
-            // })
         }
-        $timeout(count, 1000);
+        timeout = $timeout(count, 1000);
+        SessionService.checkActiveSession(localStorage.userID).then(function(active){
+          if (active.active == false) {
+            $timeout.cancel(timeout);
+          }
+        })
       }
     })
 
@@ -82,27 +82,27 @@ function DataController($scope, $timeout, $state, DataService, UserService, Sess
         }
     })
 
-    $scope.$on('$ionicView.loaded', function() {
-        //Requests the last data point in the database
-        //Todo: Make this bike specific
-        (function tick() {
-            DataService.getLastData(localStorage.userID).then(function(last) {
-                //Set rpm, display rpm in radial view, and add datapoint to chart.
-                var rpm = last.rpm
-                $scope.data[0].push(rpm)
-                $scope.rpm_data = [0, rpm-200, rpm]
-                $scope.lastRPM = parseInt(rpm)
-                $scope.deg = rpm*360.0/200.0
-                $scope.labels.push("")
-                if ($scope.data[0].length>50) {
-                    $scope.data[0].shift()
-                    $scope.labels.shift()
-                }
-
-                $timeout(tick, 500)
-            })
-        })();
-    });
+    // $scope.$on('$ionicView.loaded', function() {
+    //     //Requests the last data point in the database
+    //     //Todo: Make this bike specific
+    //     (function tick() {
+    //         DataService.getLastData(localStorage.userID).then(function(last) {
+    //             //Set rpm, display rpm in radial view, and add datapoint to chart.
+    //             var rpm = last.rpm
+    //             $scope.data[0].push(rpm)
+    //             $scope.rpm_data = [0, rpm-200, rpm]
+    //             $scope.lastRPM = parseInt(rpm)
+    //             $scope.deg = rpm*360.0/200.0
+    //             $scope.labels.push("")
+    //             if ($scope.data[0].length>50) {
+    //                 $scope.data[0].shift()
+    //                 $scope.labels.shift()
+    //             }
+    //
+    //             $timeout(tick, 500)
+    //         })
+    //     })();
+    // });
 
 }
 
