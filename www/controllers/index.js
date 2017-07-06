@@ -21,23 +21,3 @@ angular.module(GLOBALS.APP_NAME)
 	.controller("ProfileController", profileController)
     .controller("ChangePasswordController",ChangePasswordController)
     .controller("ResetPasswordController",ResetPasswordController)
-	// .factory('authInterceptor', function ($rootScope, $q, $window) {
-	//   return {
-	//     request: function (config) {
-	//       config.headers = config.headers || {};
-	//       //console.log(config.headers);
-	//       if (localStorage.token) {
-	//       	console.log("Authentication is called!");
-	//         config.headers.authorization = localStorage.token;
-	//       }
-	//       return config;
-	//     },
-	//     responseError: function (response) {
-	//     	console.log(response.status)
-	//       if (response.status === 401 || response.status === 403) {
-	//         //console.log("User is not registered!");
-	//       }
-	//       return $q.reject(response);
-	//     }
-	//   };
-	// })
