@@ -12,7 +12,9 @@ function LoginController ($scope, $state, UserService,$ionicPopup) {
                 if (response.token) {
                     localStorage.token = response.token;
                     localStorage.name = response.userName;
+                    console.log("UserID at login: " + response.userID);
                     localStorage.userID = response.userID;
+                    console.log("UserID at login: " + response.userID);
                     localStorage.email = response.email;
                     $state.go('tab.data');
                 }
