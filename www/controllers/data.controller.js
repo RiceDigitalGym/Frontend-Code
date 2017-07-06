@@ -51,52 +51,58 @@ function DataController($scope, $timeout, $state, DataService, UserService, Sess
     //Used for keeping track of current workout duration. Display purposes only. Real time is stored in server.
     $scope.current_duration = 0
     $scope.current_duration_formatted = "00:00:00"
-    SessionService.getWorkoutDuration().then(function(duration){
+    SessionService.getWorkoutDuration(localStorage.userID).then(function(duration){
 
+      if (duration.success) {
         //Set the current workout duration to duration on server.
         $scope.current_duration = parseInt(duration.duration)
-        $scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
-
+        //$scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
         //This self-calling function is used to locally keep track of time.
-        (function count() {
-            $scope.current_duration = $scope.current_duration + 1;
+        var count = function() {
+            $scope.current_duration = $scope.current_duration + 1000;
+            console.log("real time duration",$scope.current_duration);
             $scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
-            $timeout(count, 1000);
-        })()
-
+            // SessionService.checkActiveSession(localStorage.userID).then(function(active){
+            //   if (active.active == false) {
+            //     return $scope.current_duration_formatted
+            //   }
+            // })
+        }
+        $timeout(count, 1000);
+      }
     })
 
     //This fetches the average current duration. All computation for average duration done on the server side.
-    SessionService.getAverageDuration().then(function(duration) {
+    SessionService.getAverageDuration(localStorage.userID).then(function(duration) {
         if (duration.success) {
             $scope.avg = duration.duration;
-        } 
+        }
         else {
             $scope.avg = "00:00:00";
         }
     })
 
-    // $scope.$on('$ionicView.loaded', function() {
-    //     //Requests the last data point in the database
-    //     //Todo: Make this bike specific
-    //     (function tick() {
-    //         DataService.getLastData().then(function(last) {
-    //             //Set rpm, display rpm in radial view, and add datapoint to chart.
-    //             var rpm = last.rpm
-    //             $scope.data[0].push(rpm)
-    //             $scope.rpm_data = [0, rpm-200, rpm]
-    //             $scope.lastRPM = parseInt(rpm)
-    //             $scope.deg = rpm*360.0/200.0
-    //             $scope.labels.push("")
-    //             if ($scope.data[0].length>50) {
-    //                 $scope.data[0].shift()
-    //                 $scope.labels.shift()
-    //             }
+    $scope.$on('$ionicView.loaded', function() {
+        //Requests the last data point in the database
+        //Todo: Make this bike specific
+        (function tick() {
+            DataService.getLastData(localStorage.userID).then(function(last) {
+                //Set rpm, display rpm in radial view, and add datapoint to chart.
+                var rpm = last.rpm
+                $scope.data[0].push(rpm)
+                $scope.rpm_data = [0, rpm-200, rpm]
+                $scope.lastRPM = parseInt(rpm)
+                $scope.deg = rpm*360.0/200.0
+                $scope.labels.push("")
+                if ($scope.data[0].length>50) {
+                    $scope.data[0].shift()
+                    $scope.labels.shift()
+                }
 
-    //             $timeout(tick, 500)
-    //         })
-    //     })();
-    // });
+                $timeout(tick, 500)
+            })
+        })();
+    });
 
 }
 
