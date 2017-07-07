@@ -48,6 +48,31 @@ function DataController($scope, $timeout, $state, $interval, DataService, UserSe
         }
     };
 
+    $scope.$on('$ionicView.loaded', function() {
+        //Requests the last data point in the database
+        //Todo: Make this bike specific
+        (function tick() {
+            DataService.getLastData(localStorage.userID).then(function(last) {
+                //Set rpm, display rpm in radial view, and add datapoint to chart.
+
+                var rpm = last.rpm
+                console.log("rpm",rpm);
+                $scope.data[0].push(rpm)
+                $scope.rpm_data = [0, rpm-200, rpm]
+                $scope.lastRPM = parseInt(rpm)
+                $scope.deg = rpm*360.0/200.0
+                $scope.labels.push("")
+                if ($scope.data[0].length>50) {
+                    $scope.data[0].shift()
+                    $scope.labels.shift()
+                }
+                //$timeout(tick, 500);
+            })
+            $timeout(tick, 500)
+        })();
+
+    });
+
     //Used for keeping track of current workout duration. Display purposes only. Real time is stored in server.
     $scope.current_duration = 0
     $scope.current_duration_formatted = "00:00:00"
@@ -103,28 +128,30 @@ function DataController($scope, $timeout, $state, $interval, DataService, UserSe
         }
     })
 
-    $scope.$on('$ionicView.loaded', function() {
-        //Requests the last data point in the database
-        //Todo: Make this bike specific
-        (function tick() {
-            DataService.getLastData(localStorage.userID).then(function(last) {
-                //Set rpm, display rpm in radial view, and add datapoint to chart.
-                var rpm = last.rpm
-                console.log("rpm",rpm);
-                $scope.data[0].push(rpm)
-                $scope.rpm_data = [0, rpm-200, rpm]
-                $scope.lastRPM = parseInt(rpm)
-                $scope.deg = rpm*360.0/200.0
-                $scope.labels.push("")
-                if ($scope.data[0].length>50) {
-                    $scope.data[0].shift()
-                    $scope.labels.shift()
-                }
-
-                $timeout(tick, 500)
-            })
-        })();
-    });
+    // $scope.$on('$ionicView.loaded', function() {
+    //     //Requests the last data point in the database
+    //     //Todo: Make this bike specific
+    //     function tick() {
+    //         DataService.getLastData(localStorage.userID).then(function(last) {
+    //             //Set rpm, display rpm in radial view, and add datapoint to chart.
+    //             var rpm = last.rpm
+    //             console.log("rpm",rpm);
+    //             $scope.data[0].push(rpm)
+    //             $scope.rpm_data = [0, rpm-200, rpm]
+    //             $scope.lastRPM = parseInt(rpm)
+    //             $scope.deg = rpm*360.0/200.0
+    //             $scope.labels.push("")
+    //             if ($scope.data[0].length>50) {
+    //                 $scope.data[0].shift()
+    //                 $scope.labels.shift()
+    //             }
+    //
+    //             $timeout(tick, 500);
+    //         })
+    //         //$timeout(tick, 500)
+    //     };
+    //
+    // });
 
 }
 
