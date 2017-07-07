@@ -20,14 +20,13 @@ function ProfileController ($scope, UserService, $state) {
     $scope.history = []
     UserService.history(localStorage.userID).then(function(history) {
     	$scope.history = history.filter(function(workout) {
-            return workout.average_rpm != undefined;
-        });
+            return workout.average_rpm != 0.00;
+        }).reverse();
     })
 
     $scope.lastworkout = "";
     UserService.getLastWorkout(localStorage.userID).then(function(response) {
         console.log("Status: " + response.status)
-        console.log("Date: " + response.date)
         if (response.status == "success") {
             $scope.lastworkout = response.date;
             // var dateTime = moment(parseInt(response.time)).tz(moment.tz.guess()).format("dddd, MMMM Do, h:mm A");
