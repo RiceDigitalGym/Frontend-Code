@@ -1,6 +1,6 @@
-DataController.$inject = ['$scope', '$timeout', '$state', 'DataService', 'UserService', 'SessionService'];
+DataController.$inject = ['$scope', '$timeout', '$state', '$interval', 'DataService', 'UserService', 'SessionService'];
 
-function DataController($scope, $timeout, $state, DataService, UserService, SessionService) {
+function DataController($scope, $timeout, $state, $interval, DataService, UserService, SessionService) {
 
     String.prototype.toHHMMSS = function () {
         //console.log(this)
@@ -51,26 +51,47 @@ function DataController($scope, $timeout, $state, DataService, UserService, Sess
     //Used for keeping track of current workout duration. Display purposes only. Real time is stored in server.
     $scope.current_duration = 0
     $scope.current_duration_formatted = "00:00:00"
-    SessionService.getWorkoutDuration(localStorage.userID).then(function(duration){
 
-      if (duration.success) {
-        //Set the current workout duration to duration on server.
-        $scope.current_duration = parseInt(duration.duration)
-        //$scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
-        //This self-calling function is used to locally keep track of time.
-        var count = function() {
-            $scope.current_duration = $scope.current_duration + 1000;
-            console.log("real time duration",$scope.current_duration);
-            $scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
+    function duration_diplay() {
+      SessionService.getWorkoutDuration(localStorage.userID).then(function(duration){
+        if (duration.success) {
+          //Set the current workout duration to duration on server.
+          $scope.current_duration = parseInt(duration.duration)
+          $scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
+          //This self-calling function is used to locally keep track of time.
+          // var count = function() {
+          //     $scope.current_duration = $scope.current_duration + 1000;
+          //     console.log("real time duration",$scope.current_duration);
+          //     $scope.current_duration_formatted = String($scope.current_duration).toHHMMSS();
+          //     console.log("format",$scope.current_duration_formatted);
+          // }
+          // timeout = $timeout(count, 1000);
         }
-        timeout = $timeout(count, 1000);
-        SessionService.checkActiveSession(localStorage.userID).then(function(active){
-          if (active.active == false) {
-            $timeout.cancel(timeout);
-          }
-        })
-      }
-    })
+        else {
+          $scope.current_duration_formatted = "00:00:00";
+        }
+      })
+    };
+
+    var promise;
+    $scope.start_display = function() {
+      promise = $interval(duration_diplay, 1000, -1);
+    };
+    //$scope.stop_display = function() {
+    //   $interval.cancel(promise)
+    // };
+    $scope.start_display();
+
+    // function stop_duration_display() {
+    //   SessionService.checkActiveSession(localStorage.userID).then(function(active){
+    //     if (active.active == false) {
+    //       $interval.cancel(timer01);
+    //     }
+    //   });
+    // };
+
+
+
 
     //This fetches the average current duration. All computation for average duration done on the server side.
     SessionService.getAverageDuration(localStorage.userID).then(function(duration) {
