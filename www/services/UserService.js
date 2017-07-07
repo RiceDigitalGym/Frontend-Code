@@ -20,21 +20,18 @@ function UserService($http, APP_CONFIG, $state){
 
     this.forgotpasswordchange = function(email,password){
         return $http.post(APP_CONFIG.API_ENDPOINT + "/forgotpasswordchange", {email: email,password:password}).then(function(response) {
-      		console.log("Response Status: " + response.status);
       		return response.data
     	}) 
     }
     
     this.resetpasswordemail = function(email){
        return $http.post(APP_CONFIG.API_ENDPOINT + "/sendresetpassword", {email: email,}).then(function(response) {
-      		console.log("Response Status: " + response.status);
       		return response.data
     	})
     } 
     
     this.verifysecretcode = function(email,code){
        return $http.post(APP_CONFIG.API_ENDPOINT + "/verifysecretcode", {email: email, secretcode: code}).then(function(response) {
-      		console.log("Response Status: " + response.status);
       		return response.data
     	})
     } 

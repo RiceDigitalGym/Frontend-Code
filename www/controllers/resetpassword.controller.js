@@ -14,7 +14,7 @@ $scope.typeoftext = "text"
                 localStorage.resetpasswordemail = $scope.formData.email
                 $scope.whatisit = "Secret Code"
                 $scope.formData.email = ""
-                $scope.typeoftext = "password"
+                $scope.typeoftext = "number"
             }
             else {
                 var alertPopup = $ionicPopup.alert({
@@ -41,7 +41,6 @@ $scope.typeoftext = "text"
         })
     }
         else if ($scope.whatisit == "New Password"){
-            
             UserService.forgotpasswordchange(localStorage.resetpasswordemail,$scope.formData.email).then(function(response){
             if (response.status == 200){
                 var alertPopup = $ionicPopup.alert({
