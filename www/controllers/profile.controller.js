@@ -1,4 +1,4 @@
-ProfileController.$inject = ["$scope", "UserService","$state"]
+ProfileController.$inject = ["$scope", "UserService", "$state"]
 
 function ProfileController ($scope, UserService, $state) {
    
@@ -26,9 +26,15 @@ function ProfileController ($scope, UserService, $state) {
 
     $scope.lastworkout = "";
     UserService.getLastWorkout(localStorage.userID).then(function(response) {
-        console.log("USER ID: " + localStorage.userID);
-        console.log("WORKOUT RESPONSE: " + response.status);
-        $scope.lastworkout = response.date;
+        console.log("Status: " + response.status)
+        console.log("Date: " + response.date)
+        if (response.status == "success") {
+            $scope.lastworkout = response.date;
+            // var dateTime = moment(parseInt(response.time)).tz(moment.tz.guess()).format("dddd, MMMM Do, h:mm A");
+            // $scope.lastworkout = dateTime;
+        } else {
+            $scope.lastworkout = "No recent workouts found.";
+        }
     })
 
 }

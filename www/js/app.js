@@ -3,6 +3,7 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angul
     
     .run(function($ionicPlatform) {
         console.log("File 'app.js' is being used. (2)")
+
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -15,6 +16,7 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angul
                 StatusBar.styleDefault();
             }
         });
+
     })
 
     .config(function($stateProvider, $urlRouterProvider, ChartJsProvider, $sceDelegateProvider, $ionicConfigProvider, $httpProvider) {
@@ -123,7 +125,6 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angul
         $urlRouterProvider.otherwise('/home');
 
     });
-
 
 require('../services');
 require('../controllers');
