@@ -26,7 +26,8 @@ function ProfileController ($scope, UserService, $state) {
 
     $scope.lastworkout = "";
     UserService.getLastWorkout(localStorage.userID).then(function(response) {
-        console.log("WORKOUT RESPONSE: " + response);
+        console.log("USER ID: " + localStorage.userID);
+        console.log("WORKOUT RESPONSE: " + response.status);
         $scope.lastworkout = response.date;
     })
 

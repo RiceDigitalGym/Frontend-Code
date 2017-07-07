@@ -77,7 +77,7 @@ function UserService($http, APP_CONFIG, $state){
 	}
 
 	this.getLastWorkout = function(id) {
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/get_last_workout", {userID: id}).then(function(response) {
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/get_last_workout", {userID: id}).then(function(response) {
 			console.log("Response Status: " + response.status);
 			return response.data
 		})
