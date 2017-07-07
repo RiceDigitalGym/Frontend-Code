@@ -30,7 +30,7 @@ function UserService($http, APP_CONFIG, $state){
     } 
     
     this.verifysecretcode = function(email,code){
-       return $http.post(APP_CONFIG.API_ENDPOINT + "/sendresetpassword", {email: email, secretcode: code}).then(function(response) {
+       return $http.post(APP_CONFIG.API_ENDPOINT + "/verifysecretcode", {email: email, secretcode: code}).then(function(response) {
       		return response.data
     	})
     } 
