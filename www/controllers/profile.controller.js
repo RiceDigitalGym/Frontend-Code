@@ -20,7 +20,8 @@ function ProfileController ($scope, UserService, $state) {
     $scope.history = []
     UserService.history(localStorage.userID).then(function(history) {
     	$scope.history = history.filter(function(workout) {
-            return workout.average_rpm != 0;
+            console.log("WORKOUT RPM: " + workout.average_rpm)
+            return workout.average_rpm != undefined;
         });
     })
 
