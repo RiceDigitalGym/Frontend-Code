@@ -20,29 +20,13 @@ function ProfileController ($scope, UserService, $state) {
     $scope.history = []
     UserService.history(localStorage.userID).then(function(history) {
     	$scope.history = history.filter(function(workout) {
-            console.log("WORKOUT RPM: " + workout.average_rpm)
             return workout.average_rpm != undefined;
         });
     })
 
-    // function getLastWorkout() {
-    //     var most_recent_date = NUMBER.NEGATIVE_INFINITY
-    //     for (workout in $scope.history) {
-    //         var date = Date.parse(history[inc].createdAt)
-    //         if (date > most_recent_date) {
-    //             most_recent_date = date
-    //         }
-    //     }
-    //     if (most_recent_date != NUMBER.NEGATIVE_INFINITY) {
-    //         return (new Date(most_recent_date)).toDateString()
-    //     }
-    //     else {
-    //         return "No recent workouts found."
-    //     }
-    // }
-
     $scope.lastworkout = "";
-    UserService.getLastWorkout().then(function(response) {
+    UserService.getLastWorkout(localStorage.userID).then(function(response) {
+        console.log("WORKOUT RESPONSE: " + response);
         $scope.lastworkout = response.date;
     })
 
