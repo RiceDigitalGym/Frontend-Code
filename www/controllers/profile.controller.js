@@ -24,8 +24,8 @@ function ProfileController ($scope, UserService, $state) {
         }).sort(function(a, b) {
             console.log("THIS IS A: " + a.start);
             console.log("THIS IS B: " + b.start);
-            console.log("THIS IS B - A: " + b.start - a.start);
-            return b.start - a.start;
+            console.log("THIS IS B - A: " + (parseInt(b.start) - parseInt(a.start)));
+            return parseInt(b.start) - parseInt(a.start);
         });
     })
 
