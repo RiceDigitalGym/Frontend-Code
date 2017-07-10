@@ -21,7 +21,9 @@ function ProfileController ($scope, UserService, $state) {
     UserService.history(localStorage.userID).then(function(history) {
     	$scope.history = history.filter(function(workout) {
             return workout.average_rpm != 0.00;
-        }).reverse();
+        }).sort(function(a, b){
+            return b.start - a.start;
+        });
     })
 
     $scope.lastworkout = "";
