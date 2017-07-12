@@ -13,13 +13,13 @@ function TagController($scope, $state, UserService, $ionicPopup, $interval) {
         if ($scope.formData == undefined ) {
             $scope.showLoading = false;
             var alertPopup = $ionicPopup.alert({
-                        title: 'Please input both fields!'
+                title: 'Please input both fields!'
             });
         }
         else if ($scope.formData.tagName == undefined || $scope.formData.machineID == undefined) {
             $scope.showLoading = false;
             var alertPopup = $ionicPopup.alert({
-                    title: 'Please input both fields!'
+                title: 'Please input both fields!'
             });
         }
         else {

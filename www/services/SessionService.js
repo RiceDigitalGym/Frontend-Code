@@ -22,12 +22,6 @@ function SessionService($http, APP_CONFIG, $state) {
 		})
 	}
 
-	this.listen = function() {
-		return $http.get(APP_CONFIG.API_ENDPOINT + "/sessionlisten").then(function(list) {
-			return list.data
-		});
-	}
-
 }
 
 module.exports = SessionService;
