@@ -52,6 +52,7 @@ function DataController($scope, $timeout, $state, $interval, DataService, UserSe
         //Requests the last data point in the database
         //Todo: Make this bike specific
         (function tick() {
+        if (localStorage.userID){
             DataService.getLastData(localStorage.userID).then(function(last) {
                 //Set rpm, display rpm in radial view, and add datapoint to chart.
 
@@ -69,7 +70,7 @@ function DataController($scope, $timeout, $state, $interval, DataService, UserSe
                 //$timeout(tick, 500);
             })
             $timeout(tick, 500)
-        })();
+        }})();
 
     });
 
@@ -78,6 +79,7 @@ function DataController($scope, $timeout, $state, $interval, DataService, UserSe
     $scope.current_duration_formatted = "00:00:00"
 
     function duration_diplay() {
+        if (localStorage.userID){
       SessionService.getWorkoutDuration(localStorage.userID).then(function(duration){
         if (duration.success) {
           //Set the current workout duration to duration on server.
@@ -96,7 +98,7 @@ function DataController($scope, $timeout, $state, $interval, DataService, UserSe
           $scope.current_duration_formatted = "00:00:00";
         }
       })
-    };
+    }};
 
     var promise;
     $scope.start_display = function() {
