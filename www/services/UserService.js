@@ -4,8 +4,8 @@ UserService.$inject = ['$http', 'APP_CONFIG', '$state']
 
 function UserService($http, APP_CONFIG, $state){
 
-	this.setupAccount = function(id, name, email, password) {
-		return $http.post(APP_CONFIG.API_ENDPOINT + "/setup_account", {userID: id, name: name, email: email, password: password}).then(function(response) {
+	this.setupAccount = function(name, email, password) {
+		return $http.post(APP_CONFIG.API_ENDPOINT + "/setup_account", {name: name, email: email, password: password}).then(function(response) {
 			console.log("Response Status: " + response.status);
 			return response.data;
 		})
