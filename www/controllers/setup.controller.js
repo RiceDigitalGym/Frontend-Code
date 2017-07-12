@@ -1,15 +1,26 @@
-SetupController.$inject = ["$scope", "$state", "UserService"]
+SetupController.$inject = ["$scope", "$state", "UserService","$ionicPopup"]
 
-function SetupController($scope, $state, UserService) {
+function SetupController($scope, $state, UserService,$ionicPopup) {
   
     $scope.setupAccount = function() {
         // Add more appropriate data inputs in the future!
-        localStorage.name = $scope.formData.name;
-        localStorage.email = $scope.formData.email;
-
-        UserService.setupAccount(localStorage.userID, $scope.formData.name, $scope.formData.email, $scope.formData.password).then(function(response) {
+        UserService.setupAccount($scope.formData.name, $scope.formData.email, $scope.formData.password).then(function(response) {
             if (response.status == "success") {
+                localStorage.token = response.token;
+                    localStorage.name = response.userName;
+                    localStorage.userID = response.userID;
+                    localStorage.email = response.email;
                 $state.go('tab.dash');
+            }
+            else if (response.status == "failure"){
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Error, account not created.',
+                });
+            }
+            else if (response.status == "409"){
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Account already exists.',
+                });
             }
         })
     }
