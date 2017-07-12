@@ -26,8 +26,9 @@ function TagController($scope, $state, UserService, $ionicPopup, $interval) {
             $interval(function() {
                 $scope.count++;
                 if (!$scope.registered) {
-                    console.log("UserID from tag controller: " + localStorage.userID);
+                    // console.log("UserID from tag controller: " + localStorage.userID);
                     UserService.checkTag($scope.formData.tagName, $scope.formData.machineID, localStorage.userID).then(function(response) {
+                        // console.log("RESPONSE STATUS: " + response.status)
                         if (response.status == "success") {
                             var alertPopup = $ionicPopup.alert({
                                 title: 'Tag has been registered.'

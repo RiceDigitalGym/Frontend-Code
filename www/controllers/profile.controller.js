@@ -22,16 +22,13 @@ function ProfileController ($scope, UserService, $state) {
     	$scope.history = history.filter(function(workout) {
             return workout.average_rpm != 0.00;
         }).sort(function(a, b) {
-            console.log("THIS IS A: " + a.start);
-            console.log("THIS IS B: " + b.start);
-            console.log("THIS IS B - A: " + (parseInt(b.start) - parseInt(a.start)));
             return parseInt(b.start) - parseInt(a.start);
         });
     })
 
     $scope.lastworkout = "";
     UserService.getLastWorkout(localStorage.userID).then(function(response) {
-        console.log("Status: " + response.status)
+        // console.log("Status: " + response.status)
         if (response.status == "success") {
             $scope.lastworkout = response.date;
             // var dateTime = moment(parseInt(response.time)).tz(moment.tz.guess()).format("dddd, MMMM Do, h:mm A");
