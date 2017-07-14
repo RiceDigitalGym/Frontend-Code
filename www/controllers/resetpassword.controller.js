@@ -29,6 +29,7 @@ $scope.typeoftext = "text"
                 var alertPopup = $ionicPopup.alert({
                     title: 'Please input a new password.',
                 });
+                localStorage.secretcode = $scope.formData.email
                 $scope.whatisit = "New Password"
                 $scope.formData.email = ""
                 $scope.typeoftext = "password"
@@ -40,13 +41,13 @@ $scope.typeoftext = "text"
             }
         })
     }
-        else if ($scope.whatisit == "New Password"){
-            UserService.forgotpasswordchange(localStorage.resetpasswordemail,$scope.formData.email).then(function(response){
+        else if ($scope.whatisit == "New Password"){ UserService.forgotpasswordchange(localStorage.resetpasswordemail,$scope.formData.email,localStorage.secretcode).then(function(response){
             if (response.status == 200){
                 var alertPopup = $ionicPopup.alert({
                     title: 'Password changed!',
                 });
                 localStorage.removeItem("resetpasswordemail");
+                localStorage.removeItem("secretcode");
                 $state.go('login');
             }
             else {

@@ -18,8 +18,8 @@ function UserService($http, APP_CONFIG, $state){
 		})
 	}
 
-    this.forgotpasswordchange = function(email,password){
-        return $http.post(APP_CONFIG.API_ENDPOINT + "/forgotpasswordchange", {email: email,password:password}).then(function(response) {
+    this.forgotpasswordchange = function(email,password,code){
+        return $http.post(APP_CONFIG.API_ENDPOINT + "/forgotpasswordchange", {email: email,password:password,secretcode: code}).then(function(response) {
       		return response.data
     	}) 
     }
