@@ -6,6 +6,10 @@ function LoginController ($scope, $state, UserService,$ionicPopup) {
         $state.go('forgotpassword');
     }
     
+     $scope.back  = function() {
+        $state.go('home');
+    }
+    
     $scope.submitLogin  = function() {
         if ($scope.formData.email && $scope.formData.password) {
             UserService.login($scope.formData.email, $scope.formData.password).then(function(response) {

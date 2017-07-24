@@ -3,9 +3,15 @@ resetpasswordcontroller.$inject = ["$scope", "UserService","$state","$ionicPopup
 function resetpasswordcontroller($scope, UserService, $state, $ionicPopup) {
 $scope.whatisit = "Email"
 $scope.typeoftext = "text"
-    $scope.process = function(){
-        if ($scope.whatisit == "Email"){
+var clicked = false;
 
+    $scope.back  = function() {
+        $state.go('login');
+    }
+
+    $scope.process = function(){
+        if ($scope.whatisit == "Email" && clicked == false){
+            clicked = true
             UserService.resetpasswordemail($scope.formData.email).then(function(response){
             if (response.status == 200){
                 var alertPopup = $ionicPopup.alert({
@@ -22,8 +28,10 @@ $scope.typeoftext = "text"
                 });
             }
         })
+        clicked = false
 }
-        else if ($scope.whatisit == "Secret Code"){
+        else if ($scope.whatisit == "Secret Code" && clicked == false){
+            clicked = true
             UserService.verifysecretcode(localStorage.resetpasswordemail,$scope.formData.email).then(function(response){
             if (response.status == 200){
                 var alertPopup = $ionicPopup.alert({
@@ -40,8 +48,11 @@ $scope.typeoftext = "text"
                 });
             }
         })
+            clicked = false
     }
-        else if ($scope.whatisit == "New Password"){ UserService.forgotpasswordchange(localStorage.resetpasswordemail,$scope.formData.email,localStorage.secretcode).then(function(response){
+        else if ($scope.whatisit == "New Password" && clicked == false){ 
+           clicked = true
+UserService.forgotpasswordchange(localStorage.resetpasswordemail,$scope.formData.email,localStorage.secretcode).then(function(response){
             if (response.status == 200){
                 var alertPopup = $ionicPopup.alert({
                     title: 'Password changed!',
@@ -56,6 +67,7 @@ $scope.typeoftext = "text"
                 });
             }
         })
+    clicked = false
     }        
 
 }

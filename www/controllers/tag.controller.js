@@ -1,6 +1,9 @@
 TagController.$inject = ['$scope', '$state', 'UserService', '$ionicPopup', '$interval']
 
 function TagController($scope, $state, UserService, $ionicPopup, $interval) {
+    $scope.back  = function() {
+        $state.go('tab.dash');
+    }
 
     $scope.showLoading = false;
     

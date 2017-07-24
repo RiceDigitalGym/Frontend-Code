@@ -1,7 +1,10 @@
 SetupController.$inject = ["$scope", "$state", "UserService","$ionicPopup"]
 
 function SetupController($scope, $state, UserService,$ionicPopup) {
-  
+   $scope.back  = function() {
+        $state.go('home');
+    }
+    
     $scope.setupAccount = function() {
         // Add more appropriate data inputs in the future!
         UserService.setupAccount($scope.formData.name, $scope.formData.email, $scope.formData.password).then(function(response) {
