@@ -18,6 +18,12 @@ function UserService($http, APP_CONFIG, $state){
 		})
 	}
 
+    this.deleteaccount = function(id,password){
+        return $http.post(APP_CONFIG.API_ENDPOINT+"/deleteaccount",{id: id,password:password}).then(function(response){
+            return response.data
+        })
+    }
+    
     this.forgotpasswordchange = function(email,password,code){
         return $http.post(APP_CONFIG.API_ENDPOINT + "/forgotpasswordchange", {email: email,password:password,secretcode: code}).then(function(response) {
       		return response.data
