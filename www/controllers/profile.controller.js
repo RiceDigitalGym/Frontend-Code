@@ -6,9 +6,6 @@ function ProfileController ($scope, UserService, $state, $ionicPopup) {
         $state.go('changepassword');
     }
 
-    $scope.registerTag = function() {
-        $state.go('tag');
-    }
     
     $scope.delete = function(sessionid) {
         UserService.deleteworkout(sessionid).then(function(response){
@@ -42,7 +39,7 @@ $scope.deleteAccount = function() {
     if (!$scope.name) {
         $scope.name = "undefined";
     }
-
+        
     //getting past workout data for user
     $scope.history = []
     UserService.history(localStorage.userID).then(function(history) {
@@ -68,4 +65,5 @@ $scope.deleteAccount = function() {
 
 }
 
-module.exports = ProfileController;
+
+module.exports = ProfileController
