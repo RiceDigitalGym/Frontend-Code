@@ -17,7 +17,19 @@ function UserService($http, APP_CONFIG, $state){
 			return response.data;
 		})
 	}
+    
+    this.deleteworkout = function(sessionid){
+        return $http.post(APP_CONFIG.API_ENDPOINT+"/deleteworkout",{sessionid: sessionid}).then(function(response){
+            return response.data
+        })
+    }
 
+    this.deleteaccount = function(id,password){
+        return $http.post(APP_CONFIG.API_ENDPOINT+"/deleteaccount",{id: id,password:password}).then(function(response){
+            return response.data
+        })
+    }
+    
     this.forgotpasswordchange = function(email,password,code){
         return $http.post(APP_CONFIG.API_ENDPOINT + "/forgotpasswordchange", {email: email,password:password,secretcode: code}).then(function(response) {
       		return response.data

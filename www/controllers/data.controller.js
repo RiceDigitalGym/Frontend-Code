@@ -1,7 +1,8 @@
 DataController.$inject = ['$scope', '$interval', '$state', 'DataService', 'UserService', 'SessionService'];
 
 function DataController($scope, $interval, $state, DataService, UserService, SessionService) {
-
+var firstinterval;
+var secondinterval;
 
   //helper function for displaying formatted time
   String.prototype.toHHMMSS = function () {
@@ -52,8 +53,9 @@ function DataController($scope, $interval, $state, DataService, UserService, Ses
 //Used for keeping track of current workout duration. Display purposes only. Real time is stored in server.
 $scope.current_duration = 0
 $scope.current_duration_formatted = "00:00:00"
-$interval(duration_display, 1000);
+firstinterval = $interval(duration_display, 1000);
 function duration_display() {
+if (localStorage.userID){
  SessionService.getWorkoutDuration(localStorage.userID).then(function(duration){
     if (duration.success) {
       console.log("duration", duration.duration);
@@ -72,7 +74,10 @@ function duration_display() {
     else {
       $scope.current_duration_formatted = "00:00:00"
     }
-  })
+  })}
+else{
+        $interval.cancel(firstinterval)
+    }
 }
 
 
@@ -88,8 +93,9 @@ function duration_display() {
 //$scope.$on('$ionicView.loaded', function () {
     //Requests the last data point in the database
     //Todo: Make this bike specific
-     $interval(tick, 1000);
+    secondinterval = $interval(tick, 1000);
      function tick() {
+    if (localStorage.userID){
        DataService.getLastData(localStorage.userID).then(function(last){
          //Set rpm, display rpm in radial view, and add datapoint to chart.
             console.log("in get last data");
@@ -104,7 +110,10 @@ function duration_display() {
               $scope.data[0].shift()
               $scope.labels.shift()
             }
-      });
+      })}
+    else{
+        $interval.cancel(secondinterval)
+    }
     };
 
 }
