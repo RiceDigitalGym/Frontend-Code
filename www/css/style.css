@@ -32,8 +32,8 @@ div#roundedTag{
 	border-width: 0px;
 	border-radius: 9px;
 	width: 60%;
-	height: 25px;
-	line-height: 25px;
+	height: 0%;
+	line-height: 200%;
 	background-color: rgba(175,175,175,1);
 }
 
@@ -111,6 +111,14 @@ div#rounded{
 	color: #5280C3;
 
 }
+
+#roundedText{
+	font-size: 100%;
+	font-weight: bold;
+	color: #5280C3;
+    text-align: center;
+}
+
 .left{
 		border-top-left-radius: 9px;
 	border-bottom-left-radius: 9px;
