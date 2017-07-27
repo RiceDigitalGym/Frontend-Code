@@ -81,6 +81,11 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angul
                 templateUrl: 'templates/tag.html',
                 controller: "TagController"
             })
+            .state('main', {
+                url: "/main",
+                templateUrl: "templates/main.html",
+                controller: 'MainController'
+            })
             .state('tab', {
                 url: '/tab',
                 templateUrl: 'templates/tabs.html',
@@ -93,15 +98,6 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angul
                     'tab-data': {
                         templateUrl: "templates/tab-data.html",
                         controller: 'DataController'
-                    }
-                }
-            })
-            .state('tab.dash', {
-                url: "/dash",
-                views: {
-                    'tab-dash': {
-                        templateUrl: "templates/tab-dash.html",
-                        controller: 'ProfileController'
                     }
                 }
             })

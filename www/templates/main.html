@@ -1,0 +1,119 @@
+
+<ion-content scroll="false">
+  <ion-slides  options="options" slider="data.slider">
+    <ion-slide-page>
+        <ion-view  left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background">
+        <ion-view hide-nav-bar="true">
+          <ion-content>
+
+        <div class = "profile-image-container">
+        <div class = "absolute-margin"></div>
+        <img class = "profile-image" src ="img/default.png"></img> </div>
+
+        <div class = "profile-text-container">
+         <div class = "absolute-margin"></div>
+         <p class = "name">{{name}}</p>
+         <p class = "lastworkout">Last workout: {{lastworkout}}</p>
+         <!-- <p class = "lastworkout">Last workout: {{lastworkout}}</p> -->
+        </div>
+
+        <div class = "workout-history-container">
+
+         <div style = "margin-top: 20px; padding-top: 60px; padding-left: 10px; padding-right: 20px">
+
+        
+        <div ng-repeat= "workout in history" style = "width: 100%; height: 150px; text-align: left" class="card">
+        <div style='float: right; margin-right: 5%'><a class="ion-ios-close" style = "font-size: 200%;" ng-click="delete({{workout.sessionid}})"></a></div>
+
+        <div style = "width: 100%; height: 50px;">
+        <p class = "lastworkout" style = "float: right; margin-right: 10px; font-size: 20px;font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default;">Date: {{workout.date}}</p>
+        <div style="display: none;">{{workout.sessionid}}</div>
+        </div>
+        <p style = "margin-left: 10px; float: left; width: 100%">Average RPM: {{workout.average_rpm}} rpm</p>
+        <p style = "margin-left: 10px; float: left; width: 100%">Duration: {{workout.duration}}</p>
+          </div>
+        </div>
+        </div>
+        </ion-content>
+        </ion-view></ion-view>
+      
+    </ion-slide-page>
+    <ion-slide-page>
+      
+        
+            <ion-view left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background" >
+            <ion-view hide-nav-bar="true"> 
+              <ion-content style = "height: 100%">
+
+                <ion-list>
+            <!--       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="datum in data" type="item-text-wrap" href="#/tab/data/{{datum.id}}">
+            {{datum}}
+                  </ion-item> -->
+
+            <div style = "background-color:#fff; margin-top: 0px;">
+            <canvas height = "200" id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series = "series" chart-options="options" chart-dataset-override="datasetOverride" chart-click="onClick"> </canvas> </div>
+
+            <!-- <div class = "rmp-title" style = "height: 30px; margin: auto; margin-top: 20px;  text-align: center; color: #FFF; font-weight: 100">{{name}}</div> -->
+            <div style= "background-color: #fff!important; width: 100%; height: 500px; ">
+
+            <div style = "float:left; width: 30%; padding-top: 20px; margin-left: 10px">
+              <ion-radial-progress style ="margin: auto;">
+
+              </ion-radial-progress>
+            </div>
+
+            <div style = "float: left; padding-left: 15%; padding-top: 40px; width: 60%; text-align: center ">
+            <div >
+            <div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 150%; font-weight: bold; color:#3288C9;text-align: center">YOUR WORKOUT DURATION</div>
+            <div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 250%; font-weight: bold; color:#3288C9; text-align: center; margin-top: 15px">{{current_duration_formatted}}</div>
+            <div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 150%; font-weight: bold; color:#AAA;text-align: center; margin-top: 30px">AVERAGE WORKOUT DURATION</div>
+            <div style = "font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default; font-size: 250%; font-weight: bold; color:#AAA; text-align: center; margin-top: 15px">{{avg}}</div>
+            </div>
+               </div>
+                    </div>
+                </ion-list>
+                </ion-content>
+            </ion-view></ion-view>
+
+        
+        
+    </ion-slide-page>
+    <ion-slide-page>
+      
+      
+      
+        <ion-view  left-buttons="leftButtons" right-buttons="rightButtons" hide-back-button="true" class="bubble-background">
+        <ion-view hide-nav-bar="true">
+          <ion-content>
+
+        <div class = "profile-image-container">
+        <div class = "absolute-margin"></div>
+        <img class = "profile-image" src ="img/default.png"></img> </div>
+
+        <div class = "profile-text-container">
+         <div class = "absolute-margin"></div>
+         <p class = "name">{{name}}</p>
+        </div>
+
+        <div class = "workout-history-container">
+
+         <div style = "margin-top: 20px; padding-top: 60px; padding-left: 10px; padding-right: 20px">
+
+            <div id = "roundedPassword" ng-click="changePassword()"><p id = "submitBtn">Change Password</p></div>
+            <div id = "roundedTag" ng-click="registerTag()"><p id = "submitBtn">Register a Tag</p></div>
+            <div id = "roundedTag" ng-click="logout()"><p id = "submitBtn">Log out</p></div>
+
+            <!--<div id = "roundedPassword" ng-click="deleteAccount()"><p id = "submitBtn">Delete Account</p></div>-->
+        
+        </div>
+        </div>
+        </ion-content>
+        </ion-view></ion-view>
+      
+      
+      
+      
+    </ion-slide-page>
+  </ion-slides>
+</ion-content>
+

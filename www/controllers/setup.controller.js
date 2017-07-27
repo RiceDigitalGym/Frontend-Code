@@ -13,7 +13,7 @@ function SetupController($scope, $state, UserService,$ionicPopup) {
                     localStorage.name = response.userName;
                     localStorage.userID = response.userID;
                     localStorage.email = response.email;
-                $state.go('tab.dash');
+                $state.go('main');
             }
             else if (response.status == "failure"){
                 var alertPopup = $ionicPopup.alert({

@@ -2,7 +2,7 @@ ChangePasswordController.$inject = ["$scope", "UserService","$state","$ionicPopu
 
 function ChangePasswordController($scope, UserService, $state, $ionicPopup) {
     $scope.back  = function() {
-        $state.go('tab.dash');
+        $state.go('main');
     }
     
     $scope.ChangePassword  = function(){
@@ -11,7 +11,7 @@ function ChangePasswordController($scope, UserService, $state, $ionicPopup) {
                 var alertPopup = $ionicPopup.alert({
                     title: 'Password Changed',
                 });
-                $state.go('tab.dash')
+                $state.go('main')
             }
             else {
                 var alertPopup = $ionicPopup.alert({

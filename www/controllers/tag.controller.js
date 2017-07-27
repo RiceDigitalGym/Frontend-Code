@@ -2,7 +2,7 @@ TagController.$inject = ['$scope', '$state', 'UserService', '$ionicPopup', '$int
 
 function TagController($scope, $state, UserService, $ionicPopup, $interval) {
     $scope.back  = function() {
-        $state.go('tab.dash');
+        $state.go('main');
     }
 
     $scope.showLoading = false;
@@ -37,7 +37,7 @@ function TagController($scope, $state, UserService, $ionicPopup, $interval) {
                                 title: 'Tag has been registered.'
                             });
                             $scope.registered = true;
-                            $state.go('tab.dash');
+                            $state.go('main');
                         } else if ($scope.count == 5) {
                             $scope.count = 0;
                             var alertPopup = $ionicPopup.alert({
