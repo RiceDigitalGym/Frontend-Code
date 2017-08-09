@@ -19,6 +19,22 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angul
 
     })
 
+    .run(function($ionicPlatform, $ionicPopup) {
+        $ionicPlatform.ready(function() {
+            if(window.Connection) {
+                if(navigator.connection.type == Connection.NONE) {
+                    $ionicPopup.alert({
+                        title: "No Internet Connection",
+                        content: "This app will not function without a working internet connection. Please connect to the internet and try again."
+                    })
+                    .then(function(result) {
+                            ionic.Platform.exitApp();
+                    });
+                }
+            }
+        });
+    })
+
     .config(function($stateProvider, $urlRouterProvider, ChartJsProvider, $sceDelegateProvider, $ionicConfigProvider, $httpProvider) {
         
         $ionicConfigProvider.views.maxCache(0);
