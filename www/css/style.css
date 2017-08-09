@@ -182,7 +182,12 @@ div#rounded{
 	padding-top:50px;
 }
 
-
+#gridcontent {
+  width: 80% ;
+height: 80%;
+  margin-left: auto ;
+  margin-right: auto ;
+}
 
 .name{
   font-family: 'Helvetica Neue', Helvetica, Arial, 'Lucida Grande', sans-serif !default;

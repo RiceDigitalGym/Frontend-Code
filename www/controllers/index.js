@@ -9,6 +9,8 @@ var navigationController = require('./navigation.controller.js')
 var mainController = require('./main.controller.js')
 var ChangePasswordController = require('./ChangePassword.controller.js')
 var ResetPasswordController = require('./resetpassword.controller.js')
+var PictureController = require('./picture.controller.js')
+
 
 angular.module(GLOBALS.APP_NAME)
 	.controller("LoginController", loginController)
@@ -21,3 +23,4 @@ angular.module(GLOBALS.APP_NAME)
 	.controller("MainController", mainController)
     .controller("ChangePasswordController",ChangePasswordController)
     .controller("ResetPasswordController",ResetPasswordController)
+    .controller("PictureController",PictureController)

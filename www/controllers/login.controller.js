@@ -20,6 +20,8 @@ function LoginController ($scope, $state, UserService,$ionicPopup) {
                     localStorage.userID = response.userID;
                     console.log("UserID at login from localStorage: " + localStorage.userID);
                     localStorage.email = response.email;
+                    localStorage.profilepicture = response.image;
+
                     $state.go('main');
                 }
                 else {

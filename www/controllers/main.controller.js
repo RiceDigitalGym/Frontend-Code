@@ -1,6 +1,16 @@
 MainController.$inject = ["$scope", "UserService", "$state", "$ionicPopup", "$interval", "SessionService", "DataService"]
 
 function MainController ($scope, UserService, $state, $ionicPopup, $interval, SessionService, DataService) {
+    
+    $scope.getpicture = function(){
+        return localStorage.profilepicture
+    }
+    
+    
+    $scope.profilePicture = function() { 
+        $state.go('picture');
+    }
+    
     $scope.logout = function(){
 	    //This function sends a logout request to the server for a specific userID.
 	    UserService.logout(localStorage.userID).then(function(response){

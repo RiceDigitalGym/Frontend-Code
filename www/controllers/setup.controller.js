@@ -13,6 +13,8 @@ function SetupController($scope, $state, UserService,$ionicPopup) {
                     localStorage.name = response.userName;
                     localStorage.userID = response.userID;
                     localStorage.email = response.email;
+                    localStorage.profilepicture = response.image;
+
                 $state.go('main');
             }
             else if (response.status == "failure"){

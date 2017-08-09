@@ -8,7 +8,7 @@
 
         <div class = "profile-image-container">
         <div class = "absolute-margin"></div>
-        <img class = "profile-image" src ="img/default.png"></img> </div>
+        <img class = "profile-image" ng-src ="{{getpicture()}}"></img> </div>
 
         <div class = "profile-text-container">
          <div class = "absolute-margin"></div>
@@ -88,7 +88,7 @@
 
         <div class = "profile-image-container">
         <div class = "absolute-margin"></div>
-        <img class = "profile-image" src ="img/default.png"></img> </div>
+        <img class = "profile-image" ng-src ="{{getpicture()}}"></img> </div>
 
         <div class = "profile-text-container">
          <div class = "absolute-margin"></div>
@@ -101,6 +101,7 @@
 
             <div id = "roundedTag" ng-click="changePassword()"><p id = "roundedText">Change Password</p></div>
             <div id = "roundedTag" ng-click="registerTag()"><p id = "roundedText">Register a Tag</p></div>
+            <div id = "roundedTag" ng-click="profilePicture()"><p id = "roundedText">Change Picture</p></div>
             <div id = "roundedTag" ng-click="logout()"><p id = "roundedText">Log out</p></div>
 
             <!--<div id = "roundedPassword" ng-click="deleteAccount()"><p id = "submitBtn">Delete Account</p></div>-->

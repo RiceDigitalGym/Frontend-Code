@@ -18,6 +18,12 @@ function UserService($http, APP_CONFIG, $state){
 		})
 	}
     
+    this.changeprofilepicture = function(userid,image){
+        return $http.post(APP_CONFIG.API_ENDPOINT+"/changeprofilepicture",{email: localStorage.email, image: image}). then(function(response){
+            return response.data
+        })
+    }
+    
     this.deleteworkout = function(sessionid){
         return $http.post(APP_CONFIG.API_ENDPOINT+"/deleteworkout",{sessionid: sessionid}).then(function(response){
             return response.data

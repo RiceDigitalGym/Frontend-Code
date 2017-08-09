@@ -1,8 +1,7 @@
-HomeController.$inject = ["$scope", "$state"]
+HomeController.$inject = ["$scope", "$timeout", "$state", "SessionService", "$http"]
 
-function HomeController($scope, $state) {
-    
-    
+function HomeController($scope, $timeout, $state, SessionService, $http) {
+
     $scope.goToSetup = function() {
         $state.go('setup');
     }

@@ -77,6 +77,11 @@ angular.module('DigitalGym', ['ionic', 'chart.js', 'ion-radial-progress', 'angul
                 templateUrl: 'templates/login.html',
                 controller: "LoginController"
             })
+            .state('picture', {
+                url: '/profilepicture',
+                templateUrl: 'templates/profilepictures.html',
+                controller: "PictureController"
+            })
             .state('setup', {
                 url: '/setup_account',
                 templateUrl: 'templates/setup.html',
